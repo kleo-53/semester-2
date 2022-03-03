@@ -12,18 +12,11 @@ internal class StackOnList : IStack
     {
         stack = new List<double>();
     }
-    public StackOnList(int size)
-    {
-        stack = new double[size];
-    }
     // Добавляет элемент
     public void Push(double element)
     {
-        if (count == stack.Length)
-        {
-            Array.Resize(ref stack, stack.Length + 10);
-        }
-        stack[count++] = element;
+        stack.Insert(0, element);
+        ++count;
     }
     // Возвращает, пустой ли стек
     public bool IsEmpty
@@ -42,12 +35,9 @@ internal class StackOnList : IStack
         {
             throw new InvalidOperationException("Стек пуст");
         }
-        double element = stack[--count];
-        stack[count] = default(double);
-        if (count > 0 && count < stack.Length - 10)
-        {
-            Array.Resize(ref stack, stack.Length - 10);
-        }
+        double element = stack.First();
+        stack.RemoveAt(0);
+        --count;
         return element;
     }
 }

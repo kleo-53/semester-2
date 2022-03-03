@@ -14,7 +14,7 @@ namespace StackCalculator
             }
             else
             {
-                stack = new StackOnArray();
+                stack = new StackOnList();
             }
             var arrayElements = inputString.Split(' ');
             for (var i = 0; i < arrayElements.Length; i++)

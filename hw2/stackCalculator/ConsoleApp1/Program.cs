@@ -13,7 +13,7 @@ class Program
             Console.WriteLine("Введен пустой массив!");
             return;
         }
-        Console.WriteLine("Введите строку в обратной польской записи:\n");
+        Console.WriteLine("Введите строку в обратной польской записи:");
         var inputString = Console.ReadLine();
         if (inputString == null)
         {
