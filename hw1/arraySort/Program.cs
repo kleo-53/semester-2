@@ -1,45 +1,47 @@
 ﻿using System;
-
-class Program
+namespace arraySort
 {
-    static void Swap(ref int first, ref int second)
+    static class Program
     {
-        var temporary = first;
-        first = second;
-        second = temporary;
-    }
-
-    static int[] BubbleSort(int[] sortingArray)
-    {
-        var length = sortingArray.Length;
-        for (var i = 1; i < length; i++)
+        private static void Swap(ref int first, ref int second)
         {
-            for (var j = 0; j < length - i; j++)
+            (first, second) = (second, first);
+        }
+
+        static void BubbleSort(int[] sortingArray)
+        {
+            var length = sortingArray.Length;
+            for (var i = 1; i < length; i++)
             {
-                if (sortingArray[j] > sortingArray[j + 1])
+                for (var j = 0; j < length - i; j++)
                 {
-                    Swap(ref sortingArray[j], ref sortingArray[j + 1]);
+                    if (sortingArray[j] > sortingArray[j + 1])
+                    {
+                        Swap(ref sortingArray[j], ref sortingArray[j + 1]);
+                    }
                 }
             }
-        }
-        return sortingArray;
-    }
-
-    static void Main(string[] args)
-    {
-        Console.WriteLine("Введите элементы массива для сортировки пузырьком:");
-        var inputString = Console.ReadLine();
-        if (inputString == null)
-        {
-            Console.WriteLine("Введен пустой массив!");
             return;
         }
-        var arrayElements = inputString.Split(' ');
-        var inputArray = new int[arrayElements.Length];
-        for (var i = 0; i < arrayElements.Length; i++)
+
+        static void Main(string[] args)
         {
-            inputArray[i] = Convert.ToInt32(arrayElements[i]);
+            Console.WriteLine("Введите элементы массива для сортировки пузырьком:");
+            var inputString = Console.ReadLine();
+            if (inputString == null)
+            {
+                Console.WriteLine("Введен пустой массив!");
+                return;
+            }
+            var arrayElements = inputString.Split(' ');
+            var inputArray = new int[arrayElements.Length];
+            for (var i = 0; i < arrayElements.Length; i++)
+            {
+                inputArray[i] = Convert.ToInt32(arrayElements[i]);
+            }
+            BubbleSort(inputArray);
+            Console.WriteLine($"Отсортированный массив: {string.Join(' ', inputArray)}");
+
         }
-        Console.WriteLine("Отсортированный массив: {0}", string.Join(" ", BubbleSort(inputArray)));
     }
 }
