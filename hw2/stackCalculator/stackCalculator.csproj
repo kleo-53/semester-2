@@ -7,4 +7,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="Stack.Tests">
+      <HintPath>Stack.Tests\obj\Debug\net6.0\Stack.Tests.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

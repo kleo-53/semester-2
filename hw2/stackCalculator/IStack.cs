@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace StackCalculator.Tests
+namespace StackCalculator
 {
     internal interface IStack
     {

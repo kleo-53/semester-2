@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace StackCalculator.Tests;
+namespace StackCalculator;
 
-internal class StackOnList : IStack
+public class StackOnList : IStack
 {
 
     private List<double> stack;

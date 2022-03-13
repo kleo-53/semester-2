@@ -4,7 +4,7 @@ using StackCalculator;
 
 class Program
 {
-    static void Main(string[] args)
+    public static void Main(string[] args)
     {
         Console.WriteLine("Какой стек использовать?\n0 - на массиве\n1 - на списке");
         var stackType = Console.ReadLine();

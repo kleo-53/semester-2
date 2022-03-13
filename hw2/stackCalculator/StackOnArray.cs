@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace StackCalculator.Tests
+namespace StackCalculator
 {
-    class StackOnArray : IStack
+    public class StackOnArray : IStack
     {
         private double[] stack;
         private const int stackSize = 10;
