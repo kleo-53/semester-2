@@ -19,9 +19,9 @@ public class StackOnList : IStack
         ++count;
     }
     // Возвращает, пустой ли стек
-    public bool IsEmpty
+    public bool IsEmpty()
     {
-        get { return count == 0; }
+        return count == 0;
     }
     // Возвращает размер стека
     public int Count()
@@ -31,7 +31,7 @@ public class StackOnList : IStack
     // Удаляет и возвращает первый элемент стека
     public double Pop()
     {
-        if (IsEmpty)
+        if (IsEmpty())
         {
             throw new InvalidOperationException("Стек пуст");
         }

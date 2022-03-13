@@ -2,7 +2,7 @@
 
 namespace StackCalculator
 {
-    internal class Calculator
+    public class Calculator
     {
         public static double Calculation(string inputString, string stackType)
         {
@@ -11,9 +11,17 @@ namespace StackCalculator
             {
                 stack = new StackOnArray();
             }
-            else
+            else if (stackType == "1")
             {
                 stack = new StackOnList();
+            }
+            else
+            {
+                throw new ArgumentException("Expected 0 or 1");
+            }
+            if (inputString == "")
+            {
+                throw new ArgumentNullException("Empty expression");
             }
             var arrayElements = inputString.Split(' ');
             for (var i = 0; i < arrayElements.Length; i++)
@@ -30,18 +38,11 @@ namespace StackCalculator
                     try
                     {
                         firstElement = stack.Pop();
-                    }
-                    catch
-                    {
-                        throw new Exception("Empty stack");
-                    }
-                    try
-                    {
                         secondElement = stack.Pop();
                     }
-                    catch
+                    catch (InvalidOperationException ex)
                     {
-                        throw new Exception("Empty stack");
+                        throw new InvalidOperationException("Empty stack");
                     }
                     switch (arrayElements[i])
                     {
@@ -55,8 +56,14 @@ namespace StackCalculator
                             stack.Push(firstElement * secondElement);
                             break;
                         case "/":
+                            if (firstElement.Equals(0))
+                            {
+                                throw new InvalidOperationException("Dividing by zero");
+                            }
                             stack.Push(secondElement / firstElement);
                             break;
+                        default:
+                            throw new ArgumentException("Expected digits or +, -, *, /");
                     }
                 }
             }
@@ -66,7 +73,7 @@ namespace StackCalculator
             }
             else
             {
-                throw new Exception("Empty stack");
+                throw new InvalidOperationException("Incorrect stack work");
             }
         }
     }

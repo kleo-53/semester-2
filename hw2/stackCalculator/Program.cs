@@ -7,9 +7,9 @@ class Program
     {
         Console.WriteLine("Какой стек использовать?\n0 - на массиве\n1 - на списке");
         var stackType = Console.ReadLine();
-        if (stackType == null)
+        if (stackType != "1" && stackType != "0")
         {
-            Console.WriteLine("Введен пустой массив!");
+            Console.WriteLine("Ожидался ответ 0 или 1!");
             return;
         }
         Console.WriteLine("Введите строку в обратной польской записи:");
@@ -24,10 +24,15 @@ class Program
             var result = Calculator.Calculation(inputString, stackType);
             Console.WriteLine("Результат вычисления выражения: {0}", result);
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
         { 
-            Console.WriteLine(ex.ToString()); 
+            Console.WriteLine(ex.Message); 
             return; 
+        }
+        catch (ArgumentNullException ex)
+        {
+            Console.WriteLine(ex.Message);
+            return;
         }
         return;
     }

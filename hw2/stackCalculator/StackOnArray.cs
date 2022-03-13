@@ -15,6 +15,7 @@ namespace StackCalculator
         {
             stack = new double[size];
         }
+
         // Добавляет элемент
         public void Push(double element)
         {
@@ -24,20 +25,23 @@ namespace StackCalculator
             }
             stack[count++] = element;
         }
+
         // Возвращает, пустой ли стек
-        public bool IsEmpty
+        public bool IsEmpty()
         {
-            get { return count == 0; }
+            return count == 0;
         }
+
         // Возвращает размер стека
         public int Count()
         {
             return count;
         }
+
         // Удаляет и возвращает первый элемент стека
         public double Pop()
         {
-            if (IsEmpty)
+            if (IsEmpty())
             {
                 throw new InvalidOperationException("Стек пуст");
             }
