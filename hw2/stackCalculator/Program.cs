@@ -1,5 +1,4 @@
 ﻿using System;
-using StackCalculator.Tests;
 using StackCalculator;
 
 class Program
