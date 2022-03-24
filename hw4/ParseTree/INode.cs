@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ParseTree
 {
-    internal interface INode
+    public interface INode
     {
-        public int Calculate();
+        public virtual int Calculate();
         public void PrintResult();
     }
 }

@@ -47,20 +47,26 @@ namespace ParseTree
             {
                 ++index;
             }
+            INode node;
             if (isOperation(givenString[index], givenString[index + 1]))
             {
-                var node = new Operator(givenString[index]);
+                node = new Operator(givenString[index]);
                 node.leftSon = AddNodeRecursive(givenString, ref index);
                 node.rightSon = AddNodeRecursive(givenString, ref index);
-                return node;
             }
-            if (givenString[index] == '-')
+            else
             {
-                ++index;
-                var node = new Operand(numberConvert(givenString, ref index) * -1);
-                return node;
+
+                if (givenString[index] == '-')
+                {
+                    ++index;
+                    node = new Operand(numberConvert(givenString, ref index) * -1);
+                }
+                else
+                {
+                    node = new Operand(numberConvert(givenString, ref index));
+                }
             }
-            var node = new Operand(numberConvert(givenString, ref index));
             return node;
         }
     }

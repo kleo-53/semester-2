@@ -6,18 +6,17 @@ using System.Threading.Tasks;
 
 namespace ParseTree
 {
-    public class Operand : INode
+    public class Multiply : Operator
     {
-        public int operand;
-        public Operand(int number)
+        Multiply()
         {
-            this.operand = number;
+            this.operation = '*';
         }
-        public int Calculate()
+        public override int Calculate()
         {
-            return operand;
+            return this.rightSon.Calculate() * this.leftSon.Calculate();
         }
-        public void PrintResult()
+        public override void PrintResult()
         {
             Console.WriteLine(this.Calculate());
         }
