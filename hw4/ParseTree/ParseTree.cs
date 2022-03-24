@@ -13,10 +13,12 @@ namespace ParseTree
         {
             this.root = null;
         }
+
         public bool IsEmpty(ParseTree tree)
         {
             return (tree.root == null);
         }
+
         public int numberConvert(string givenString, ref int index)
         {
             int number = 0;
@@ -27,6 +29,7 @@ namespace ParseTree
             }
         return number;
         }
+
         public bool isOperation(char symbol, char next)
         {
             if (symbol == '+' || symbol == '*' || symbol == '/')
@@ -39,7 +42,8 @@ namespace ParseTree
             }
             return false;
         }
-        public INode AddNodeRecursive(string givenString, ref int index)
+
+        private INode AddNodeRecursive(string givenString, ref int index)
         {
             ++index;
             while (index != givenString.Length && (givenString[index] == ' ' ||
@@ -50,13 +54,34 @@ namespace ParseTree
             INode node;
             if (isOperation(givenString[index], givenString[index + 1]))
             {
-                node = new Operator(givenString[index]);
+                switch (givenString[index])
+                {
+                    case '+':
+                        {
+                            node = new Plus();
+                            break;
+                        }
+                    case '-':
+                        {
+                            node = new Minus();
+                            break;
+                        }
+                    case '*':
+                        {
+                            node = new Multiply();
+                            break;
+                        }
+                    case '/':
+                        {
+                            node = new Divide();
+                            break;
+                        }
+                }
                 node.leftSon = AddNodeRecursive(givenString, ref index);
                 node.rightSon = AddNodeRecursive(givenString, ref index);
             }
             else
             {
-
                 if (givenString[index] == '-')
                 {
                     ++index;
@@ -66,8 +91,72 @@ namespace ParseTree
                 {
                     node = new Operand(numberConvert(givenString, ref index));
                 }
+
             }
             return node;
+        }
+
+        public ParseTree CreateAndAdd(string givenString)
+        {
+            ParseTree tree = new ParseTree();
+            int index = -1;
+            tree.root = AddNodeRecursive(givenString, ref index);
+            return tree;
+        }
+
+        private int CalculateRecursive(INode node)
+        {
+            if (node.leftSon == null && node.rightSon == null)
+            {
+                return node.Calculate();
+            }
+            const int operandFirst = CalculateRecursive(node.leftSon);
+            const int operandSecond = CalculateRecursive(node.rightSon);
+            switch (node.operation)
+            {
+                case '+':
+                    return operandFirst + operandSecond;
+                case '-':
+                    return operandFirst - operandSecond;
+                case '/':
+                    {
+                        if (operandSecond == 0)
+                        {
+                            return -1;
+                        }
+                        return operandFirst / operandSecond;
+                    }
+                default:
+                    return operandFirst * operandSecond;
+            }
+        }
+
+        public int DoCalculation(ParseTree tree)
+        {
+            return CalculateRecursive(tree.root);
+        }
+
+        private void PrintRecursive(INode node)
+        {
+            if (node.leftSon == null && node.rightSon == null)
+            {
+                node.PrintResult();
+                return;
+            }
+            node.PrintResult();
+            PrintRecursive(node.leftSon);
+            Console.Write(" ");
+            PrintRecursive(node.rightSon);
+            Console.Write(" )");
+        }
+
+        public void PrintTree(ParseTree tree)
+        {
+            if (tree.IsEmpty())
+            {
+                return;
+            }
+            PrintRecursive(tree.root);
         }
     }
 }

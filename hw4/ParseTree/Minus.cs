@@ -16,9 +16,5 @@ namespace ParseTree
         {
             return this.rightSon.Calculate() - this.leftSon.Calculate();
         }
-        public override void PrintResult()
-        {
-            Console.WriteLine(this.Calculate());
-        }
     }
 }

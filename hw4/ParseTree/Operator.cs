@@ -13,37 +13,15 @@ namespace ParseTree
         public INode rightSon;
         public Operator(char operation)
         {
-            switch (operation)
-            {
-                case '+':
-                    {
-                        Plus();
-                        break;
-                    }
-                case '-':
-                    {
-                        Minus();
-                        break;
-                    }
-                case '*':
-                    {
-                        Multiply();
-                        break;
-                    }
-                case '/':
-                    {
-                        Divide();
-                        break;
-                    }
-            }
         }
 
         public virtual int INode.Calculate()
         {
         }
 
-        public virtual void INode.PrintResult()
+        public void INode.PrintResult()
         {
+            Console.WriteLine(this.operation);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace ParseTree
         }
         public void PrintResult()
         {
-            Console.WriteLine(this.Calculate());
+            Console.WriteLine(this.operand);
         }
     }
 }

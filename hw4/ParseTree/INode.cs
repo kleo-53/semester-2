@@ -8,7 +8,7 @@ namespace ParseTree
 {
     public interface INode
     {
-        public virtual int Calculate();
+        public int Calculate();
         public void PrintResult();
     }
 }
