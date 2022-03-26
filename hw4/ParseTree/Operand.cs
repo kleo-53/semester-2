@@ -9,17 +9,18 @@ namespace ParseTree
     public class Operand : INode
     {
         public int operand;
-        public Operand(int number)
-        {
-            this.operand = number;
-        }
+        public INode ? leftSon { get; set; }
+        public INode ? rightSon { get; set; }
+        public Operand(int number) => this.operand = number;
+
         public int Calculate()
         {
             return operand;
         }
+
         public void PrintResult()
         {
-            Console.WriteLine(this.operand);
+            Console.Write(this.operand);
         }
     }
 }

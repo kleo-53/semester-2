@@ -6,22 +6,13 @@ using System.Threading.Tasks;
 
 namespace ParseTree
 {
-    public class Operator : INode
+    public abstract class Operator : INode
     {
-        public char operation;
-        public INode leftSon;
-        public INode rightSon;
-        public Operator(char operation)
-        {
-        }
+        public INode ? leftSon { get; set; }
+        public INode ? rightSon { get; set; }
 
-        public virtual int INode.Calculate()
-        {
-        }
+        public abstract int Calculate();
 
-        public void INode.PrintResult()
-        {
-            Console.WriteLine(this.operation);
-        }
+        public abstract void PrintResult();
     }
 }

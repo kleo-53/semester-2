@@ -8,13 +8,24 @@ namespace ParseTree
 {
     public class Divide : Operator
     {
-        Divide()
-        {
-            this.operation = '/';
-        }
         public override int Calculate()
         {
-            return this.rightSon.Calculate() / this.leftSon.Calculate();
+            if (this.rightSon == null || this.leftSon == null)
+            {
+                throw new ArgumentNullException("empty node");
+            }
+            try
+            {
+                return this.rightSon.Calculate() / this.leftSon.Calculate();
+            }
+            catch (DivideByZeroException)
+            {
+                throw new DivideByZeroException();
+            }
+        }
+        public override void PrintResult()
+        {
+            Console.Write("/");
         }
     }
 }

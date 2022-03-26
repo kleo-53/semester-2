@@ -6,23 +6,18 @@ using System.Threading.Tasks;
 
 namespace ParseTree
 {
-    internal class ParseTree
+    public class PTree
     {
-        private INode root;
-        public ParseTree()
+        private INode ? root;
+        public PTree()
         {
             this.root = null;
-        }
-
-        public bool IsEmpty(ParseTree tree)
-        {
-            return (tree.root == null);
         }
 
         public int numberConvert(string givenString, ref int index)
         {
             int number = 0;
-            while (givenString[index] >= '0' && givenString[index] <= '9')
+            while (index < givenString.Length && givenString[index] >= '0' && givenString[index] <= '9')
             {
                 number = number* 10 + (int) (givenString[index] - '0');
                 ++index;
@@ -46,12 +41,21 @@ namespace ParseTree
         private INode AddNodeRecursive(string givenString, ref int index)
         {
             ++index;
-            while (index != givenString.Length && (givenString[index] == ' ' ||
+            while (index < givenString.Length && (givenString[index] == ' ' ||
                 givenString[index] == '(' || givenString[index] == ')'))
             {
                 ++index;
             }
             INode node;
+            if (index == givenString.Length - 1)
+            {
+                if (givenString[index] - '0' >= 0 && '9' - givenString[index] > 0)
+                {
+                    node = new Operand(numberConvert(givenString, ref index));
+                    return node;
+                }
+                throw new InvalidOperationException("incorrect string");
+            }    
             if (isOperation(givenString[index], givenString[index + 1]))
             {
                 switch (givenString[index])
@@ -66,19 +70,20 @@ namespace ParseTree
                             node = new Minus();
                             break;
                         }
-                    case '*':
-                        {
-                            node = new Multiply();
-                            break;
-                        }
                     case '/':
                         {
                             node = new Divide();
                             break;
                         }
+                    default:
+                        {
+                            node = new Multiply();
+                            break;
+                        }
                 }
                 node.leftSon = AddNodeRecursive(givenString, ref index);
                 node.rightSon = AddNodeRecursive(givenString, ref index);
+                return node;
             }
             else
             {
@@ -96,44 +101,21 @@ namespace ParseTree
             return node;
         }
 
-        public ParseTree CreateAndAdd(string givenString)
+        public PTree CreateAndAdd(string givenString)
         {
-            ParseTree tree = new ParseTree();
+            PTree tree = new PTree();
             int index = -1;
             tree.root = AddNodeRecursive(givenString, ref index);
             return tree;
         }
 
-        private int CalculateRecursive(INode node)
+        public int DoCalculation()
         {
-            if (node.leftSon == null && node.rightSon == null)
+            if (root == null)
             {
-                return node.Calculate();
+                throw new ArgumentNullException("empty root");
             }
-            const int operandFirst = CalculateRecursive(node.leftSon);
-            const int operandSecond = CalculateRecursive(node.rightSon);
-            switch (node.operation)
-            {
-                case '+':
-                    return operandFirst + operandSecond;
-                case '-':
-                    return operandFirst - operandSecond;
-                case '/':
-                    {
-                        if (operandSecond == 0)
-                        {
-                            return -1;
-                        }
-                        return operandFirst / operandSecond;
-                    }
-                default:
-                    return operandFirst * operandSecond;
-            }
-        }
-
-        public int DoCalculation(ParseTree tree)
-        {
-            return CalculateRecursive(tree.root);
+            return root.Calculate();
         }
 
         private void PrintRecursive(INode node)
@@ -143,20 +125,26 @@ namespace ParseTree
                 node.PrintResult();
                 return;
             }
+            if (node.leftSon == null || node.rightSon == null)
+            {
+                throw new ArgumentNullException("empty node");
+            }
+            Console.Write("( ");
             node.PrintResult();
+            Console.Write(" ");
             PrintRecursive(node.leftSon);
             Console.Write(" ");
             PrintRecursive(node.rightSon);
             Console.Write(" )");
         }
 
-        public void PrintTree(ParseTree tree)
+        public void PrintTree()
         {
-            if (tree.IsEmpty())
+            if (root == null)
             {
-                return;
+                throw new ArgumentNullException("enpty root");
             }
-            PrintRecursive(tree.root);
+            PrintRecursive(root);
         }
     }
 }

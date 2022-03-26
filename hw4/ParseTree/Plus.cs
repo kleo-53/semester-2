@@ -8,13 +8,17 @@ namespace ParseTree
 {
     public class Plus : Operator
     {
-        Plus()
-        {
-            this.operation = '+';
-        }
         public override int Calculate()
         {
+            if (this.leftSon == null || this.rightSon == null)
+            {
+                throw new ArgumentNullException("empty node");
+            }
             return this.rightSon.Calculate() + this.leftSon.Calculate();
+        }
+        public override void PrintResult()
+        {
+            Console.Write("+");
         }
     }
 }
