@@ -8,27 +8,53 @@ namespace Routers;
 
 public class Graph : IGraph
 {
-    public int numVertices { get; set; }
-    public List<Tuple<int, int, int> > vertexList { get; set; }
-    public List<Tuple<int, int> >[] fromTo { get; set; }
-    public int edgesCounter {  get; set; }
+    public int NumVertexes { get; set; }
+    public List<Tuple<int, int, int>> VertexList { get; set; }
+    private int[,] fromTo;
+    public int EdgesCounter {  get; set; }
     private bool[] visited;
+    private int fromToSize;
 
     public Graph(string path) 
     {
-        edgesCounter = 0;
+        EdgesCounter = 0;
+        VertexList = new List<Tuple<int, int, int>>();
+        fromToSize = 10;
+        fromTo = new int[fromToSize, fromToSize];
         Parse(path);
     }
 
-    void addEdge(int from, int to, int weight)
+    private void Resize()
     {
-        var add1 = new Tuple<int, int>(to, weight);
-        add1 = new Tuple<int, int>(from, weight);
-        fromTo[from].Add(add1);
-        fromTo[to].Add(add1);
-        edgesCounter++;
+        fromToSize += 20;
+        var newFromTo = new int[fromToSize, fromToSize];
+        for (int i = 0; i < NumVertexes; ++i)
+        {
+            for (int j = 0; j < NumVertexes; ++j)
+            {
+                newFromTo[i, j] = fromTo[i, j];
+            }
+        }
+        fromTo = newFromTo;
+    }
+    private void AddEdge(int from, int to, int weight)
+    {
+        while (from > fromToSize || to > fromToSize)
+        {
+            Resize();
+        }
+        fromTo[from, to] = weight;
+        fromTo[to, from] = weight;
+        EdgesCounter++;
         var add = new Tuple<int, int, int>(from, to, weight);
-        vertexList.Add(add);
+        VertexList.Add(add);
+    }
+
+    public void AddAgain(Tuple<int, int, int> i)
+    {
+        fromTo[i.Item1, i.Item2] = i.Item3;
+        fromTo[i.Item2, i.Item1] = i.Item3;
+        EdgesCounter++;
     }
 
     private void Parse(string path)
@@ -43,23 +69,23 @@ public class Graph : IGraph
             }
             string[] splitLine = line.Split(" ");
             int startNode = int.Parse(splitLine[0].Split(":")[0]);
-            this.numVertices = Math.Max(numVertices, startNode);
+            this.NumVertexes = Math.Max(NumVertexes, startNode);
 
-            for (var i = 1; i < splitLine.Length; i++)
+            for (var i = 1; i < splitLine.Length; i+= 2)
             {
-                string[] splitSplitLine = splitLine[i].Split("(");
+                string[] splitSplitLine = splitLine[i+1].Split("(");
 
-                int finishNode = int.Parse(splitSplitLine[0]);
-                this.numVertices = Math.Max(numVertices, finishNode);
+                int finishNode = int.Parse(splitLine[i]);
+                this.NumVertexes = Math.Max(NumVertexes, finishNode);
                 int weight = int.Parse(splitSplitLine[1].Split(")")[0]);
-                addEdge(startNode, finishNode, weight);
+                AddEdge(startNode, finishNode, weight);
             }
         }
     }
 
-    public bool isConnect(int currentVertex, int neededVertex)
+    public bool IsConnect(int currentVertex, int neededVertex)
     {
-        //bool[] visited = new bool[numVertices];
+        visited = new bool[NumVertexes+1];
         return DFS(currentVertex, neededVertex, ref visited);
     }
 
@@ -70,10 +96,9 @@ public class Graph : IGraph
             return true;
         }
         visited[currentVertex] = true;
-        List<Tuple<int, int> > adjList = fromTo[currentVertex];
-        for (var i = adjList.First().Item1; i != adjList.Last().Item1; ++i)
+        for (var i = 0; i <= NumVertexes; ++i)
         {
-            if (!visited[i] && DFS(i, neededVertex, ref visited))
+            if (fromTo[currentVertex, i] != 0 && !visited[i] && DFS(i, neededVertex, ref visited))
             {
                 return true;
             }
@@ -82,10 +107,34 @@ public class Graph : IGraph
     }
     public void DeleteEdge(Tuple<int, int, int> i)
     {
-        var add1 = new Tuple<int, int>(i.Item2, i.Item3);
-        fromTo[i.Item1].Remove(add1);
-        add1 = new Tuple<int, int>(i.Item1, i.Item3);
-        fromTo[i.Item2].Remove(add1);
-        edgesCounter--;
+        fromTo[i.Item1, i.Item2] = 0;
+        fromTo[i.Item2, i.Item1] = 0;
+        EdgesCounter--;
+    }
+
+    public void PrintGraph(string outPath)
+    {
+        using var outputStream = new StreamWriter(outPath);
+        for (int i = 1; i <= NumVertexes; i++)
+        {
+            string line = "";
+            bool notConnectYet = true;
+            for (int j = i; j <= NumVertexes; j++)
+            {
+                if (fromTo[i, j] > 0)
+                {
+                    if (notConnectYet)
+                    {
+                        line += $"{i}: ";
+                        notConnectYet = false;
+                    }
+                    line += $"{j} ({fromTo[i, j]}), ";
+                }
+            }
+            if (!notConnectYet)
+            {
+                outputStream.WriteLine(line.Substring(0, line.Length - 2));
+            }
+        }
     }
 }
