@@ -20,6 +20,7 @@ public class Operation
         resultVector.Size = Math.Max(firstVector.NotNullPositions.Last().Item1, firstVector.NotNullPositions.Last().Item1);
         var firstIndex = 0;
         var secondIndex = 0;
+        var multiply = 0;
 
         while (firstIndex != firstVector.NotNullPositions.Count && secondIndex != secondVector.NotNullPositions.Count)
         {
@@ -51,8 +52,7 @@ public class Operation
                         }
                     case '*':
                         {
-                            resultVector.NotNullPositions.Add((firstIndex, firstVector.NotNullPositions[firstIndex].Item2
-                                * secondVector.NotNullPositions[secondIndex].Item2));
+                            multiply += firstVector.NotNullPositions[firstIndex].Item2 * secondVector.NotNullPositions[secondIndex].Item2;
                             break;
                         }
                     case '/':
@@ -67,6 +67,10 @@ public class Operation
                 firstIndex++;
                 secondIndex++;
             }
+        }
+        if (operation == '*')
+        {
+            return new MySparseVector(1, multiply);
         }
         return resultVector;
     }
