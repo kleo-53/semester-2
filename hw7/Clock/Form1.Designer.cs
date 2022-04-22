@@ -32,9 +32,13 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.process1 = new System.Diagnostics.Process();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
+            // 
+            // timer1
+            // 
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // pictureBox1
             // 
@@ -50,17 +54,6 @@
             this.pictureBox1.TabStop = false;
             this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
             // 
-            // process1
-            // 
-            this.process1.StartInfo.Domain = "";
-            this.process1.StartInfo.LoadUserProfile = false;
-            this.process1.StartInfo.Password = null;
-            this.process1.StartInfo.StandardErrorEncoding = null;
-            this.process1.StartInfo.StandardInputEncoding = null;
-            this.process1.StartInfo.StandardOutputEncoding = null;
-            this.process1.StartInfo.UserName = "";
-            this.process1.SynchronizingObject = this;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -72,6 +65,7 @@
             this.MinimumSize = new System.Drawing.Size(315, 315);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
@@ -80,6 +74,5 @@
         #endregion
         private System.Windows.Forms.Timer timer1;
         private PictureBox pictureBox1;
-        private System.Diagnostics.Process process1;
     }
 }
