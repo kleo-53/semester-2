@@ -1,4 +1,4 @@
-using NUnit.Framework;
+п»їusing NUnit.Framework;
 using StackCalculator;
 using System.Collections.Generic;
 using System;
@@ -22,7 +22,7 @@ namespace stack.Tests
         }
 
         /// <summary>
-        /// Проверка функции добавления элемента в стек и корректной работы функции IsEmpty
+        /// РџСЂРѕРІРµСЂРєР° С„СѓРЅРєС†РёРё РґРѕР±Р°РІР»РµРЅРёСЏ СЌР»РµРјРµРЅС‚Р° РІ СЃС‚РµРє Рё РєРѕСЂСЂРµРєС‚РЅРѕР№ СЂР°Р±РѕС‚С‹ С„СѓРЅРєС†РёРё IsEmpty
         /// </summary>
         [Test, TestCaseSource(nameof(StackToTest))]
         public void PushToStackWorksCorrectlyTest(IStack stack)
@@ -33,7 +33,7 @@ namespace stack.Tests
         }
 
         /// <summary>
-        /// Проверка функции IsEmpty после добавления и удаления элемента из стека
+        /// РџСЂРѕРІРµСЂРєР° С„СѓРЅРєС†РёРё IsEmpty РїРѕСЃР»Рµ РґРѕР±Р°РІР»РµРЅРёСЏ Рё СѓРґР°Р»РµРЅРёСЏ СЌР»РµРјРµРЅС‚Р° РёР· СЃС‚РµРєР°
         /// </summary>
         [Test, TestCaseSource(nameof(StackToTest))]
         public void StackIsEmptyAfterPushAndPopTest(IStack stack)
@@ -45,7 +45,7 @@ namespace stack.Tests
         }
 
         /// <summary>
-        /// Проверка работы принципа First-In-Last-Out для трех элементов
+        /// РџСЂРѕРІРµСЂРєР° СЂР°Р±РѕС‚С‹ РїСЂРёРЅС†РёРїР° First-In-Last-Out РґР»СЏ С‚СЂРµС… СЌР»РµРјРµРЅС‚РѕРІ
         /// </summary>
         [Test, TestCaseSource(nameof(StackToTest))]
         public void PopWithThreeElementsFromStackWorksCorrectlyTest(IStack stack)
@@ -53,18 +53,18 @@ namespace stack.Tests
             stack.Push(1);
             stack.Push(3);
             stack.Push(2);
-            Assert.AreEqual(2, stack.Pop());
-            Assert.AreEqual(3, stack.Pop());
-            Assert.AreEqual(1, stack.Pop());
+            Assert.AreEqual(2, stack.Pop().Item1);
+            Assert.AreEqual(3, stack.Pop().Item1);
+            Assert.AreEqual(1, stack.Pop().Item1);
         }
 
         /// <summary>
-        /// Проверка появления ошибки при попытке удалить элемент из пустого стека
+        /// РџСЂРѕРІРµСЂРєР° РїРѕСЏРІР»РµРЅРёСЏ РѕС€РёР±РєРё РїСЂРё РїРѕРїС‹С‚РєРµ СѓРґР°Р»РёС‚СЊ СЌР»РµРјРµРЅС‚ РёР· РїСѓСЃС‚РѕРіРѕ СЃС‚РµРєР°
         /// </summary>
         [Test, TestCaseSource(nameof(StackToTest))]
         public void PopWithNoPushThrowsExceptionTest(IStack stack)
         {
-            Assert.Throws<InvalidOperationException>(() => { stack.Pop(); });
+            Assert.IsFalse(stack.Pop().Item2);
         }
     }
 }
