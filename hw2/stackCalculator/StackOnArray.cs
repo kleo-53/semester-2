@@ -31,8 +31,8 @@ public class StackOnArray : IStack
         {
             Array.Resize(ref stack, stack.Length * 2);
         }
-        ++count;
         stack[count] = element;
+        ++count;
     }
 
     /// <summary>

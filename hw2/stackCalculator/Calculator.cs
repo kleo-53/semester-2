@@ -1,16 +1,19 @@
 ﻿namespace StackCalculator;
 
 using System;
-using StackCalculator.Tests;
 
 /// <summary>
 /// Класс, производящий вычисление выражений в обратной польской записи
 /// </summary>
-internal static class Calculator
+public static class Calculator
 {
     public static (double, bool) Calculation(string inputString, IStack stack)
     {
         var arrayElements = inputString.Split(' ');
+        if (arrayElements.Length == 0)
+        {
+            throw new IndexOutOfRangeException();
+        }
         for (var i = 0; i < arrayElements.Length; i++)
         {
             if (arrayElements[i][arrayElements[i].Length - 1] >= '0' 
@@ -46,6 +49,10 @@ internal static class Calculator
                         stack.Push(firstElement * secondElement);
                         break;
                     case "/":
+                        if (firstElement == 0)
+                        {
+                            throw new DivideByZeroException();
+                        }
                         stack.Push(secondElement / firstElement);
                         break;
                     default:

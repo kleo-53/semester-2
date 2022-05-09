@@ -1,7 +1,6 @@
 ﻿namespace StackCalculator;
 
 using System;
-using StackCalculator.Tests;
 
 class Program
 {

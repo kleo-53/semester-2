@@ -5,7 +5,7 @@ using System;
 /// <summary>
 /// Реализация структуры стека
 /// </summary>
-internal interface IStack
+public interface IStack
 {
     /// <summary>
     /// Добавляет элемент в стек
