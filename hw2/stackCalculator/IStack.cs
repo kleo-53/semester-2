@@ -1,31 +1,32 @@
-﻿using System;
+﻿namespace StackCalculator;
 
-namespace StackCalculator
+using System;
+
+/// <summary>
+/// Реализация структуры стека
+/// </summary>
+public interface IStack
 {
-    public interface IStack
-    {
-        /// <summary>
-        /// Добавляет элемент в стек
-        /// </summary>
-        /// <param name="element">Добавляемый элемент</param>
-        void Push(double element);
+    /// <summary>
+    /// Добавляет элемент в стек
+    /// </summary>
+    /// <param name="element">Добавляемый элемент</param>
+    void Push(double element);
 
-        /// <summary>
-        /// Удаляет и возвращает верхний элемент стека
-        /// </summary>
-        /// <returns>Удаленный элемент</returns>
-        double Pop();
+    /// <summary>
+    /// Удаляет и возвращает верхний элемент стека
+    /// </summary>
+    /// <returns>Удаленный элемент и true, либо false в случае пустого стека</returns>
+    public (double, bool) Pop();
 
-        /// <summary>
-        /// Возвращает текущее количество элементов в стеке
-        /// </summary>
-        /// <returns>Количество элементов в стеке</returns>
-        int Count();
+    /// <summary>
+    /// Возвращает количество элементов в стеке
+    /// </summary>
+    /// <returns>Количество элементов</returns>
+    int Count();
 
-        /// <summary>
-        /// Проверка на то, пуст ли стек
-        /// </summary>
-        /// <returns>True, если стек пуст, false, если стек не пуст</returns>
-        bool IsEmpty();
-    }
+    /// <summary>
+    /// Возвращает, пустой ли стек
+    /// </summary>
+    bool IsEmpty { get; }
 }

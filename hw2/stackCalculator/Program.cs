@@ -1,5 +1,6 @@
-﻿using System;
-using StackCalculator;
+﻿namespace StackCalculator;
+
+using System;
 
 class Program
 {
@@ -7,33 +8,19 @@ class Program
     {
         Console.WriteLine("Какой стек использовать?\n0 - на массиве\n1 - на списке");
         var stackType = Console.ReadLine();
-        if (stackType != "1" && stackType != "0")
+        if (stackType == null)
         {
-            Console.WriteLine("Ожидался ответ 0 или 1!");
+            Console.WriteLine("Введена пустая строка!");
             return;
         }
         Console.WriteLine("Введите строку в обратной польской записи:");
         var inputString = Console.ReadLine();
         if (inputString == null)
         {
-            Console.WriteLine("Введен пустой массив!");
+            Console.WriteLine("Введена пустая строка!");
             return;
         }
-        try
-        {
-            var result = Calculator.Calculation(inputString, stackType);
-            Console.WriteLine("Результат вычисления выражения: {0}", result);
-        }
-        catch (InvalidOperationException ex)
-        { 
-            Console.WriteLine(ex.Message); 
-            return; 
-        }
-        catch (ArgumentNullException ex)
-        {
-            Console.WriteLine(ex.Message);
-            return;
-        }
-        return;
+        var result = Calculator.Calculation(inputString, stackType == "0" ? new StackOnArray() : new StackOnList());
+        Console.WriteLine(result.Item2 == true ? $"Результат вычисления выражения: {result.Item1}" : "Что-то пошло не так:(");
     }
 }

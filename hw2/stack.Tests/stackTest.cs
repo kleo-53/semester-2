@@ -27,9 +27,9 @@ namespace stack.Tests
         [Test, TestCaseSource(nameof(StackToTest))]
         public void PushToStackWorksCorrectlyTest(IStack stack)
         {
-            Assert.IsTrue(stack.IsEmpty());
+            Assert.IsTrue(stack.IsEmpty);
             stack.Push(1);
-            Assert.IsFalse(stack.IsEmpty());
+            Assert.IsFalse(stack.IsEmpty);
         }
 
         /// <summary>
@@ -38,10 +38,10 @@ namespace stack.Tests
         [Test, TestCaseSource(nameof(StackToTest))]
         public void StackIsEmptyAfterPushAndPopTest(IStack stack)
         {
-            Assert.IsTrue(stack.IsEmpty());
+            Assert.IsTrue(stack.IsEmpty);
             stack.Push(1);
             stack.Pop();
-            Assert.IsTrue(stack.IsEmpty());
+            Assert.IsTrue(stack.IsEmpty);
         }
 
         /// <summary>
