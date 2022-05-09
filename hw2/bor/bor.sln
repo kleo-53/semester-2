@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bor", "bor.csproj", "{436F940C-3529-4B09-A2D0-0B3F875B40A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bor", "Bor.csproj", "{1A749B72-C67B-4A34-B776-A453A11E6ABB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bor.Tests", "..\Bor.Tests\Bor.Tests.csproj", "{315A815E-BE46-4E1E-B2AE-2E73F4DE91DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +13,19 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{436F940C-3529-4B09-A2D0-0B3F875B40A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{436F940C-3529-4B09-A2D0-0B3F875B40A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{436F940C-3529-4B09-A2D0-0B3F875B40A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{436F940C-3529-4B09-A2D0-0B3F875B40A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A749B72-C67B-4A34-B776-A453A11E6ABB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A749B72-C67B-4A34-B776-A453A11E6ABB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A749B72-C67B-4A34-B776-A453A11E6ABB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A749B72-C67B-4A34-B776-A453A11E6ABB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{315A815E-BE46-4E1E-B2AE-2E73F4DE91DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{315A815E-BE46-4E1E-B2AE-2E73F4DE91DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{315A815E-BE46-4E1E-B2AE-2E73F4DE91DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{315A815E-BE46-4E1E-B2AE-2E73F4DE91DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {F3C2AA0F-A565-4DF5-8DBF-C4F35A0803AA}
+		SolutionGuid = {68AE7382-743C-4314-A4C5-84552642EB19}
 	EndGlobalSection
 EndGlobal
