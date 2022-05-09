@@ -1,53 +1,67 @@
-﻿using System;
+﻿namespace StackCalculator;
 
-namespace StackCalculator
+using System;
+
+/// <summary>
+/// Реализация стека на массиве
+/// </summary>
+public class StackOnArray : IStack
 {
-    public class StackOnArray : IStack
+    private double[] stack;
+    private const int stackSize = 10;
+    private int count;
+
+    public StackOnArray()
     {
-        private double[] stack;
-        private const int stackSize = 10;
-        private int count;
-        public StackOnArray()
+        stack = new double[stackSize];
+    }
+
+    public StackOnArray(int size)
+    {
+        stack = new double[size];
+    }
+
+    /// <summary>
+    /// Добавляет элемент в стек
+    /// </summary>
+    /// <param name="element">Добавляемый элемент</param>
+    public void Push(double element)
+    {
+        if (count == stack.Length)
         {
-            stack = new double[stackSize];
+            Array.Resize(ref stack, stack.Length * 2);
         }
-        public StackOnArray(int size)
+        ++count;
+        stack[count] = element;
+    }
+
+    /// <summary>
+    /// Возвращает, пустой ли стек
+    /// </summary>
+    public bool IsEmpty => count == 0;
+
+    /// <summary>
+    /// Возвращает количество элементов в стеке
+    /// </summary>
+    /// <returns>Количество элементов в стеке</returns>
+    public int Count()
+        => count;
+
+    /// <summary>
+    /// Удаляет и возвращает первый элемент стека, если стек не пуст
+    /// </summary>
+    /// <returns>Первый элемент стека</returns>
+    public (double, bool) Pop()
+    {
+        if (IsEmpty)
         {
-            stack = new double[size];
+            return (0, false);
         }
-        // Добавляет элемент
-        public void Push(double element)
+        double element = stack[--count];
+        if (count > 0 && count < stack.Length / 2)
         {
-            if (count == stack.Length)
-            {
-                Array.Resize(ref stack, stack.Length + 10);
-            }
-            stack[count++] = element;
+            Array.Resize(ref stack, stack.Length / 2);
         }
-        // Возвращает, пустой ли стек
-        public bool IsEmpty
-        {
-            get { return count == 0; }
-        }
-        // Возвращает размер стека
-        public int Count()
-        {
-            return count;
-        }
-        // Удаляет и возвращает первый элемент стека
-        public double Pop()
-        {
-            if (IsEmpty)
-            {
-                throw new InvalidOperationException("Стек пуст");
-            }
-            double element = stack[--count];
-            stack[count] = default(double);
-            if (count > 0 && count < stack.Length - 10)
-            {
-                Array.Resize(ref stack, stack.Length - 10);
-            }
-            return element;
-        }
+        return (element, true);
     }
 }
