@@ -21,7 +21,7 @@ static class Program
     /// Сортирует массив сортировкой пузырьком
     /// </summary>
     /// <param name="sortingArray">Массив, который надо отсортировать</param>
-    static void BubbleSort(int[] sortingArray)
+    private static void BubbleSort(int[] sortingArray)
     {
         var length = sortingArray.Length;
         for (var i = 1; i < length; i++)
@@ -42,7 +42,7 @@ static class Program
         var inputString = Console.ReadLine();
         if (inputString == null)
         {
-            Console.WriteLine("Введен пустой массив!");
+            Console.WriteLine("Введена некорректная строка!");
             return;
         }
         var arrayElements = inputString.Split(' ');
