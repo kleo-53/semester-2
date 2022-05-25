@@ -3,23 +3,45 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-
-internal class MySkipList<T> : IList<T> where T : IComparable<T>
+/// <summary>
+/// Класс списка с пропусками
+/// </summary>
+/// <typeparam name="T">Тип значения в списке</typeparam>
+public class MySkipList<T> : IList<T> where T : IComparable<T>
 {
     private class Node
     {
+        /// <summary>
+        /// Значение в элементе
+        /// </summary>
         public T? Value { get; private set; }
+
+        /// <summary>
+        /// Следующий элемент
+        /// </summary>
         public Node? Next { get; set; }
+
+        /// <summary>
+        /// Элемент нижнего уровня
+        /// </summary>
         public Node? Down { get; set; }
 
+        /// <summary>
+        /// Конструктор элемента по значению
+        /// </summary>
+        /// <param name="value">Данное значение</param>
         public Node(T? value)
         {
             this.Value = value;
         }
+
+        /// <summary>
+        /// Конструктор элемента по нижнему и следующему
+        /// </summary>
+        /// <param name="value">Данное значение</param>
+        /// <param name="next">Следующий элемент</param>
+        /// <param name="down">Нижний элемент</param>
         public Node(T? value, Node? next, Node? down)
         {
             this.Value = value;
@@ -33,10 +55,19 @@ internal class MySkipList<T> : IList<T> where T : IComparable<T>
     private Node head; 
     private Node bottomHead;
 
+    /// <summary>
+    /// Число элементов в списке
+    /// </summary>
     public int Count { get; private set; }
 
-    public bool IsReadOnly => throw new NotImplementedException();
+    /// <summary>
+    /// Если список доступен только для чтения
+    /// </summary>
+    public bool IsReadOnly { get; set; }
 
+    /// <summary>
+    /// Изменение значения элемента по индексу
+    /// </summary>
     public T this[int index] {
         get
         {
@@ -68,13 +99,19 @@ internal class MySkipList<T> : IList<T> where T : IComparable<T>
         }
     }
 
+    /// <summary>
+    /// Конструктор списка
+    /// </summary>
     public MySkipList()
     {
-        head = new Node(default);
-        bottomHead = new Node(default);
-        maxLevel = 1;
+        this.head = new Node(default);
+        this.bottomHead = new Node(default);
+        this.maxLevel = 1;
     }
 
+    /// <summary>
+    /// Поиск элемента
+    /// </summary>
     private bool SearchRecursive(Node? node, T value)
     {
         if (node == null)
@@ -93,9 +130,14 @@ internal class MySkipList<T> : IList<T> where T : IComparable<T>
         return SearchRecursive(node.Down, value);
     }
 
-    public bool Contains(T value)
+    /// <summary>
+    /// Проверяет, содержится ли элемент в списке
+    /// </summary>
+    /// <param name="item">Данный элемент</param>
+    /// <returns>Возвращает, содержится ли элемент в списке</returns>
+    public bool Contains(T item)
     {
-        return SearchRecursive(head, value);
+        return SearchRecursive(head, item);
     }
 
     private Node? InsertRecursive(Node node, T value)
@@ -118,7 +160,7 @@ internal class MySkipList<T> : IList<T> where T : IComparable<T>
         if (downNode != null || node.Down == null)
         {
             Node? curNext = node.Next;
-            node.Next = new Node(value, downNode, curNext);
+            node.Next = new Node(value, curNext, downNode);
 
             Random random = new();
             if (random.Next(2) == 1)
@@ -130,20 +172,24 @@ internal class MySkipList<T> : IList<T> where T : IComparable<T>
         return null;
     }
 
-    public void Add(T value)
+    /// <summary>
+    /// Добавление элемента
+    /// </summary>
+    /// <param name="item">Данное значение</param>
+    public void Add(T item)
     {
         if (IsReadOnly)
         {
             throw new NotSupportedException();
         }
 
+        ++Count;
         if (head.Next == null)
         {
-            head.Next = new Node(value);
+            head.Next = new Node(item);
             return;
         }
-        InsertRecursive(head, value);
-        ++Count;
+        InsertRecursive(head, item);
 
         if (Count > Math.Pow(2, maxLevel))
         {
@@ -173,9 +219,14 @@ internal class MySkipList<T> : IList<T> where T : IComparable<T>
         return isRemoved;
     }
 
-    public bool Remove(T value)
+    /// <summary>
+    /// Удаление элемента
+    /// </summary>
+    /// <param name="item">Данный элемент</param>
+    /// <returns>Получилось ли удалить элемент</returns>
+    public bool Remove(T item)
     {
-        if (RemoveRecursive(head, value))
+        if (RemoveRecursive(head, item))
         {
             --Count;
             return true;
@@ -183,6 +234,9 @@ internal class MySkipList<T> : IList<T> where T : IComparable<T>
         return false;
     }
 
+    /// <summary>
+    /// Возвращает энумератор
+    /// </summary>
     public IEnumerator GetEnumerator()
     {
         var array = new T[Count];
@@ -190,18 +244,26 @@ internal class MySkipList<T> : IList<T> where T : IComparable<T>
         return array.GetEnumerator();
     }
 
+    /// <summary>
+    /// Возвращает энумератор
+    /// </summary>
     IEnumerator<T> IEnumerable<T>.GetEnumerator()
     {
         return (IEnumerator<T>)GetEnumerator();
     }
 
-    public int IndexOf(T value)
+    /// <summary>
+    /// Возвращает индекс по элементу
+    /// </summary>
+    /// <param name="item">Данный элемент</param>
+    /// <returns>Индекс элемента</returns>
+    public int IndexOf(T item)
     {
         int counter = 0;
-        Node? node = bottomHead.Next;
+        Node? node = head.Next;
         while (node != null)
         {
-            if (node.Value != null && node.Value.Equals(value))
+            if (node.Value != null && node.Value.Equals(item))
             {
                 return counter;
             }
@@ -211,16 +273,34 @@ internal class MySkipList<T> : IList<T> where T : IComparable<T>
         return -1;
     }
 
-    public void Insert(int index, T value)
+    /// <summary>
+    /// Вставка элемента по индексу
+    /// </summary>
+    public void Insert(int index, T item)
     {
         throw new NotSupportedException("List is sorted!");
     }
 
+    /// <summary>
+    /// Удаление по индексу
+    /// </summary>
     public void RemoveAt(int index)
     {
-        throw new NotSupportedException("Can not remove by index, only by value!");
+        if (IsReadOnly)
+        {
+            throw new NotSupportedException("Can not remove by index, only by value!");
+        }
+        if (index >= Count || Count < 0)
+        {
+            throw new ArgumentOutOfRangeException();
+        }
+        var value = this[index];
+        Remove(value);
     }
 
+    /// <summary>
+    /// Полностью очищает список
+    /// </summary>
     public void Clear()
     {
         if (IsReadOnly)
@@ -233,6 +313,11 @@ internal class MySkipList<T> : IList<T> where T : IComparable<T>
         Count = 0;
     }
 
+    /// <summary>
+    /// Переносит список в массив
+    /// </summary>
+    /// <param name="array">Данный массив</param>
+    /// <param name="arrayIndex">Номер, с которого нужно начать записывать элементы</param>
     public void CopyTo(T[] array, int arrayIndex)
     {
         if (arrayIndex >= Count || array.Length < Count - arrayIndex)
