@@ -1,31 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace ParseTree;
 
-namespace ParseTree
+using System;
+
+/// <summary>
+/// Класс операции деления
+/// </summary>
+public class Divide : Operator
 {
-    public class Divide : Operator
+    /// <summary>
+    /// Калькулятор выполняет деление
+    /// </summary>
+    /// <returns>Полученное значение</returns>
+    /// <exception cref="DivideByZeroException">Ошибка в случае деления на 0</exception>
+    public override int Calculate()
     {
-        public override int Calculate()
+        if (this.rightSon == null || this.leftSon == null)
         {
-            if (this.rightSon == null || this.leftSon == null)
-            {
-                throw new ArgumentNullException("empty node");
-            }
-            try
-            {
-                return this.rightSon.Calculate() / this.leftSon.Calculate();
-            }
-            catch (DivideByZeroException)
-            {
-                throw new DivideByZeroException();
-            }
+            throw new ArgumentNullException("empty node");
         }
-        public override void PrintResult()
+        try
         {
-            Console.Write("/");
+            return this.rightSon.Calculate() / this.leftSon.Calculate();
         }
+        catch (DivideByZeroException)
+        {
+            throw new DivideByZeroException();
+        }
+    }
+
+    /// <summary>
+    /// Вывод действия на консоль
+    /// </summary>
+    public override void PrintResult()
+    {
+        Console.Write("/");
     }
 }

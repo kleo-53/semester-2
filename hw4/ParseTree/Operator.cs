@@ -1,18 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace ParseTree;
 
-namespace ParseTree
+/// <summary>
+/// Класс элемента дерева
+/// </summary>
+public abstract class Operator : INode
 {
-    public abstract class Operator : INode
-    {
-        public INode ? leftSon { get; set; }
-        public INode ? rightSon { get; set; }
+    /// <summary>
+    /// Левый сын элемента
+    /// </summary>
+    public INode ? leftSon { get; set; }
 
-        public abstract int Calculate();
+    /// <summary>
+    /// Правый сын элемента
+    /// </summary>
+    public INode ? rightSon { get; set; }
 
-        public abstract void PrintResult();
-    }
+    /// <summary>
+    /// Выполняет вычисление
+    /// </summary>
+    /// <returns>Значение элемента</returns>
+    public abstract int Calculate();
+
+    /// <summary>
+    /// Печатает результат вычисления на консоль
+    /// </summary>
+    public abstract void PrintResult();
 }

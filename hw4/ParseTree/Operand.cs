@@ -1,26 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace ParseTree;
 
-namespace ParseTree
+using System;
+
+/// <summary>
+/// Класс элемента дерева
+/// </summary>
+public class Operand : INode
 {
-    public class Operand : INode
+    /// <summary>
+    /// Значение элемента 
+    /// </summary>
+    public int operand;
+
+    /// <summary>
+    /// Левый сын элемента
+    /// </summary>
+    public INode ? leftSon { get; set; }
+
+    /// <summary>
+    /// Правый сын элемента
+    /// </summary>
+    public INode ? rightSon { get; set; }
+
+    /// <summary>
+    /// Конструктор элемента
+    /// </summary>
+    /// <param name="number">Данное число</param>
+    public Operand(int number) => this.operand = number;
+
+    /// <summary>
+    /// Выполняет вычисление
+    /// </summary>
+    /// <returns>Значение элемента</returns>
+    public int Calculate()
     {
-        public int operand;
-        public INode ? leftSon { get; set; }
-        public INode ? rightSon { get; set; }
-        public Operand(int number) => this.operand = number;
+        return operand;
+    }
 
-        public int Calculate()
-        {
-            return operand;
-        }
-
-        public void PrintResult()
-        {
-            Console.Write(this.operand);
-        }
+    /// <summary>
+    /// Печатает результат вычисления на консоль
+    /// </summary>
+    public void PrintResult()
+    {
+        Console.Write(this.operand);
     }
 }

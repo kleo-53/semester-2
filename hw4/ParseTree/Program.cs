@@ -1,7 +1,10 @@
-﻿using System;
+﻿namespace ParseTree;
 
+using System;
 
-namespace ParseTree;
+/// <summary>
+/// Тест программы
+/// </summary>
 class Programm
 {
     //FileStream fileStream = new FileStream("Test.txt", FileMode.Open, FileAccess.Read);
