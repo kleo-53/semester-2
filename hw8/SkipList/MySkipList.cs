@@ -51,7 +51,6 @@ public class MySkipList<T> : IList<T> where T : IComparable<T>
     }
 
     private int maxLevel;
-    private const double NIL = 1e10;
     private Node head; 
     private Node bottomHead;
 
