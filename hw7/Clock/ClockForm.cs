@@ -1,7 +1,11 @@
 namespace Clock;
 
 using System.Runtime.InteropServices;
-public partial class Form1 : Form
+
+/// <summary>
+/// Класс часов
+/// </summary>
+public partial class ClockForm : Form
 {
     [DllImport("user32", CharSet = CharSet.Auto)]
     internal extern static bool PostMessage(IntPtr hWnd, uint Msg, uint WParam, uint LParam);
@@ -34,7 +38,7 @@ public partial class Form1 : Form
     private int minuteArrow = 90;
     private int hourArrow = 75;
 
-    public Form1()
+    public ClockForm()
     {
         this.TransparencyKey = this.BackColor;
         InitializeComponent();
@@ -85,7 +89,7 @@ public partial class Form1 : Form
 
     private void Form1_Load(object sender, EventArgs e)
     {
-        timer1.Tick += new EventHandler(this.timer1_Tick);
+        timer1.Tick += new EventHandler(timer1_Tick);
         timer1.Start();
     }
 }
