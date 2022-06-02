@@ -5,15 +5,17 @@ using Bor;
 
 public class Tests
 {
+    private Trie trie = new Trie(); 
+
     [SetUp]
     public void Setup()
     {
+        trie = new Trie();
     }
 
     [Test]
     public void TrieAddAndDeleteSameOrPartsTest()
     {
-        var trie = new Trie();
         Assert.IsTrue(trie.Add("qwerty"));
         Assert.IsFalse(trie.Add("qwerty"));
         Assert.IsTrue(trie.Add("qasdfg"));
@@ -28,7 +30,6 @@ public class Tests
     [Test]
     public void TrieSizeTest()
     {
-        var trie = new Trie();
         Assert.IsTrue(trie.Size == 0);
         trie.Add("qwerty");
         Assert.IsTrue(trie.Size == 1);
@@ -49,7 +50,6 @@ public class Tests
     [Test]
     public void TrieContainsTest()
     {
-        var trie = new Trie();
         trie.Add("qwerty");
         Assert.IsTrue(trie.Contains("qwerty"));
         trie.Add("qwerty");
@@ -69,7 +69,6 @@ public class Tests
     [Test]
     public void TrieStartsWithPrefixTest()
     {
-        var trie = new Trie();
         trie.Add("qwerty");
         Assert.IsTrue(trie.HowManyStartsWithPrefix("qwerty") == 1);
         trie.Add("qwerty");

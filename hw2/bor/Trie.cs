@@ -12,17 +12,20 @@ public class Trie
     /// </summary>
     private class Node
     {
-        public Dictionary<char, Node> Children;
+        /// <summary>
+        /// Потомки элемента
+        /// </summary>
+        public Dictionary<char, Node> Children { get; set; }
 
         /// <summary>
         /// Number of words that are in the descendants of the vertex
         /// </summary>
-        public int howManyWordsPassedNode { get; set; }
+        public int HowManyWordsPassedNode { get; set; }
 
         /// <summary>
         /// Number of words that are ends in the vertex
         /// </summary>
-        public int howManyWordsEndsHere { get; set; }
+        public int HowManyWordsEndsHere { get; set; }
 
         public Node()
         {
@@ -59,7 +62,7 @@ public class Trie
             {
                 return false;
             }
-            ++current.howManyWordsPassedNode;
+            ++current.HowManyWordsPassedNode;
             if (!current.Children.ContainsKey(symbol))
             {
                 current.Children[symbol] = new Node();
@@ -67,8 +70,8 @@ public class Trie
             }
             current = current.Children[symbol];
         }
-        ++current.howManyWordsPassedNode;
-        ++current.howManyWordsEndsHere;
+        ++current.HowManyWordsPassedNode;
+        ++current.HowManyWordsEndsHere;
         return isNew;
     }
 
@@ -88,7 +91,7 @@ public class Trie
             }
             current = current.Children[symbol];
         }
-        return current.howManyWordsEndsHere != 0;
+        return current.HowManyWordsEndsHere != 0;
     }
 
     /// <summary>
@@ -109,14 +112,14 @@ public class Trie
             {
                 return false;
             }
-            if (current.Children[symbol].howManyWordsPassedNode > 1)
+            if (current.Children[symbol].HowManyWordsPassedNode > 1)
             {
-                --current.Children[symbol].howManyWordsPassedNode;
+                --current.Children[symbol].HowManyWordsPassedNode;
                 current = current.Children[symbol];
             }
-            else if (current.Children[symbol].howManyWordsPassedNode == 1)
+            else if (current.Children[symbol].HowManyWordsPassedNode == 1)
             {
-                --current.Children[symbol].howManyWordsPassedNode;
+                --current.Children[symbol].HowManyWordsPassedNode;
                 var temporary = current.Children[symbol];
                 current.Children.Remove(symbol);
                 current = temporary;
@@ -146,6 +149,6 @@ public class Trie
             }
             current = current.Children[symbol];
         }
-        return current.howManyWordsPassedNode;
+        return current.HowManyWordsPassedNode;
     }
 }
