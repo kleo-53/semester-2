@@ -18,4 +18,10 @@
     <ProjectReference Include="..\Game\Game.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="mapTest.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

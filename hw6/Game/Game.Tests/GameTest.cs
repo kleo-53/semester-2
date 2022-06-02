@@ -1,21 +1,20 @@
 using NUnit.Framework;
 using System;
-using Game;
 using System.IO;
 
 namespace Game.Tests;
 
 public class Tests
 {
-    [SetUp]
-    public void Setup()
-    {
-    }
-
     [Test]
     public void OnLeftEventWorksCorrectlyWithoutWallsTest()
     {
-        string[] map = { "*******", "*     *", "       ", "       ", "* @   *", "*******" };
+        string[] map = { "*******",
+                         "*     *",
+                         "       ",
+                         "       ",
+                         "* @   *",
+                         "*******" };
         var writer = new StreamWriter(File.Open("../../../mapTest.txt", FileMode.Open));
         for (int i = 0; i < map.Length; i++)
         {
@@ -36,7 +35,12 @@ public class Tests
     [Test]
     public void OnRightEventWorksCorrectlyWithoutWallsTest()
     {
-        string[] map = { "*******", "*     *", "       ", "       ", "    @ *", "*******" };
+        string[] map = { "*******", 
+            "*     *", 
+            "       ", 
+            "       ", 
+            "    @ *", 
+            "*******" };
         var writer = new StreamWriter(File.Open("../../../mapTest.txt", FileMode.Open));
         for (int i = 0; i < map.Length; i++)
         {
@@ -57,7 +61,12 @@ public class Tests
     [Test]
     public void OnUpEventWorksCorrectlyWithoutWallsTest()
     {
-        string[] map = { "*******", "*     *", "     @ ", "       ", "       ", "*******" };
+        string[] map = { "*******", 
+            "*     *", 
+            "     @ ", 
+            "       ", 
+            "       ", 
+            "*******" };
         var writer = new StreamWriter(File.Open("../../../mapTest.txt", FileMode.Open));
         for (int i = 0; i < map.Length; i++)
         {
@@ -78,7 +87,12 @@ public class Tests
     [Test]
     public void OnDownEventWorksCorrectlyWithWallsTest()
     {
-        string[] map = { "*******", "*     *", "       ", "     @ ", "       ", "*******" };
+        string[] map = { "*******", 
+            "*     *", 
+            "       ", 
+            "     @ ", 
+            "       ", 
+            "*******" };
         var writer = new StreamWriter(File.Open("../../../mapTest.txt", FileMode.Open));
         for (int i = 0; i < map.Length; i++)
         {
@@ -99,7 +113,12 @@ public class Tests
     [Test]
     public void TwoCharactersMakeExceptionTest()
     {
-        string[] map = { "*******", "*     *", "  @    ", "       ", "     @ ", "*******" };
+        string[] map = { "*******", 
+            "*     *", 
+            "  @    ", 
+            "       ", 
+            "     @ ", 
+            "*******" };
         var writer = new StreamWriter(File.Open("../../../mapTest.txt", FileMode.Open));
         for (int i = 0; i < map.Length; i++)
         {
@@ -113,7 +132,12 @@ public class Tests
     [Test]
     public void ExtraSymbolsInMapMakeExceptionTest()
     {
-        string[] map = { "***gfh***", "*   h  *", "  @    ", "       ", "  67   @ ", "*--****" };
+        string[] map = { "***gfh***", 
+            "*   h  *", 
+            "  @    ", 
+            "       ", 
+            "  67   @ ", 
+            "*--****" };
         var writer = new StreamWriter(File.Open("../../../mapTest.txt", FileMode.Open));
         for (int i = 0; i < map.Length; i++)
         {
