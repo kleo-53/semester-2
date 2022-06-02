@@ -21,6 +21,6 @@ class Program
             return;
         }
         var result = Calculator.Calculation(inputString, stackType == "0" ? new StackOnArray() : new StackOnList());
-        Console.WriteLine(result.Item2 == true ? $"Результат вычисления выражения: {result.Item1}" : "Что-то пошло не так:(");
+        Console.WriteLine(result.Item2 ? $"Результат вычисления выражения: {result.Item1}" : "Что-то пошло не так:(");
     }
 }

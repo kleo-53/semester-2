@@ -7,11 +7,6 @@ namespace stack.Tests;
 
 public class Tests
 {
-    [SetUp]
-    public void Setup()
-    {
-    }
-
     private static IEnumerable<IStack> StackToTest
     {
         get

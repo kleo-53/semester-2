@@ -20,7 +20,7 @@ public static class Calculator
         var arrayElements = inputString.Split(' ');
         if (arrayElements.Length == 0)
         {
-            throw new IndexOutOfRangeException();
+            throw new ArgumentException();
         }
         for (var i = 0; i < arrayElements.Length; i++)
         {
@@ -57,7 +57,7 @@ public static class Calculator
                         stack.Push(firstElement * secondElement);
                         break;
                     case "/":
-                        if (firstElement == 0)
+                        if (Math.Abs(firstElement) < 0.0000001)
                         {
                             throw new DivideByZeroException();
                         }

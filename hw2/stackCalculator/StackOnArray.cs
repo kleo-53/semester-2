@@ -25,6 +25,10 @@ public class StackOnArray : IStack
     /// <param name="size">Данный размер</param>
     public StackOnArray(int size)
     {
+        if (size <= 0)
+        {
+            throw new ArgumentException("");
+        }
         stack = new double[size];
     }
 
@@ -64,7 +68,8 @@ public class StackOnArray : IStack
         {
             return (0, false);
         }
-        double element = stack[--count];
+        --count;
+        double element = stack[count];
         if (count > 0 && count < stack.Length / 2)
         {
             Array.Resize(ref stack, stack.Length / 2);
