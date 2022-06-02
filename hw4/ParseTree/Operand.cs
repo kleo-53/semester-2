@@ -10,17 +10,17 @@ public class Operand : INode
     /// <summary>
     /// Значение элемента 
     /// </summary>
-    public int operand;
+    public int operand { get; set; }
 
     /// <summary>
     /// Левый сын элемента
     /// </summary>
-    public INode ? leftSon { get; set; }
+    public INode ? LeftSon { get; set; }
 
     /// <summary>
     /// Правый сын элемента
     /// </summary>
-    public INode ? rightSon { get; set; }
+    public INode ? RightSon { get; set; }
 
     /// <summary>
     /// Конструктор элемента

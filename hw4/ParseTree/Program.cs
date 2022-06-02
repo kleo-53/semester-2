@@ -7,10 +7,9 @@ using System;
 /// </summary>
 class Programm
 {
-    //FileStream fileStream = new FileStream("Test.txt", FileMode.Open, FileAccess.Read);
     public static void Main(string[] args)
     {
-        string[] data = File.ReadAllLines("C:/Users/Star/source/repos/semester-2/hw4/ParseTree/Test.txt");
+        string[] data = File.ReadAllLines("Test.txt");
         if (data[0] == null)
         {
             return;
@@ -36,6 +35,10 @@ class Programm
         catch (DivideByZeroException)
         {
             Console.WriteLine("\nCan not divide by zero!");
+        }
+        catch(InvalidDataException)
+        {
+            Console.WriteLine("\nInvalid data!");
         }
     }
 }
