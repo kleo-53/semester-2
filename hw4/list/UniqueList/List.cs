@@ -1,43 +1,57 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace UniqueList;
 
-namespace UniqueList;
-
-public class UList
+/// <summary>
+/// Ulist
+/// </summary>
+public class List
 {
-    public class ListElement
+    /// <summary>
+    /// Элемент списка
+    /// </summary>
+    private class ListElement
     {
-        public int value;
-        public ListElement? next;
+        /// <summary>
+        /// Значение элемента
+        /// </summary>
+        public int Value { get; set; }
+
+        /// <summary>
+        /// Следующий элемент списка
+        /// </summary>
+        public ListElement? Next { get; set; }
+
+        /// <summary>
+        /// Конструктор элемента
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="next"></param>
         public ListElement(int value, ListElement? next)
         {
-            this.value = value;
-            this.next = next;
+            this.Value = value;
+            this.Next = next;
         }
 
     }
-    public ListElement? head;
-    public ListElement? tail;
-    public int size;
+    /// <summary>
+    /// Первый элемент списка
+    /// </summary>
+    private ListElement? head;
 
     /// <summary>
-    /// Класс списка
+    /// Последний элемент списка
     /// </summary>
-    public UList()
-    {
-        head = null;
-        tail = head;
-        size = 0;
-    }
+    private ListElement? tail;
+
+    /// <summary>
+    /// Количество элементов в списке
+    /// </summary>
+    public int Size { get; set; }
 
     /// <summary>
     /// Добавляет элемент в конец списка
     /// </summary>
     /// <param name="value">Добавляемый элемент</param>
-    public void Add(int value)
+    public virtual void Add(int value)
     {
         var listElement = new ListElement(value, null);
         if (head == null)
@@ -47,10 +61,10 @@ public class UList
         }
         else
         {
-            tail.next = listElement;
+            tail.Next = listElement;
             tail = listElement;
         }
-        size++;
+        Size++;
     }
 
     /// <summary>
@@ -59,24 +73,29 @@ public class UList
     /// <param name="value">Добавляемый элемент</param>
     /// <param name="position">Позиция, в которую нужно добавить элемент</param>
     /// <exception cref="OutOfListRangeException">Ошибка при неверно заданный позиции</exception>
-    public void Add(int value, int position)
+    public virtual void Add(int value, int position)
     {
-        if (position < 0 || position > size)
+        if (position < 0 || position > Size)
         {
-            throw new OutOfListRangeException();
+            throw new IndexOutOfRangeException();
         }
         ListElement? current = head;
-        ListElement? previous = null;
+        ListElement? previous = null; 
+        if (position == Size)
+        {
+            Add(value);
+            return;
+        }
         for (int i = 0; i < position; i++)
         {
             previous = current;
-            current = current.next;
+            current = current.Next;
         }
         if (current == head)
         {
             var element = new ListElement(value, head);
             head = element;
-            size++;
+            Size++;
         }
         else if (current == null)
         {
@@ -84,8 +103,8 @@ public class UList
         }
         else
         {
-            previous.next = new ListElement(value, current);
-            size++;
+            previous.Next = new ListElement(value, current);
+            Size++;
         }
     }
 
@@ -95,18 +114,18 @@ public class UList
     /// <param name="value">Новое значение</param>
     /// <param name="position">Позиция</param>
     /// <exception cref="OutOfListRangeException">Ошибка при неверно заданный позиции</exception>
-    public void Change(int value, int position)
+    public virtual void Change(int value, int position)
     {
-        if (position < 0 || position >= size)
+        if (position < 0 || position >= Size)
         {
-            throw new OutOfListRangeException();
+            throw new IndexOutOfRangeException();
         }
         ListElement? current = head;
         for (int i = 0; i < position; i++)
         {
-            current = current.next;
+            current = current.Next;
         }
-        current.value = value;
+        current.Value = value;
     }
 
     /// <summary>
@@ -114,16 +133,16 @@ public class UList
     /// </summary>
     /// <param name="value">Значение</param>
     /// <returns>Содержит список данное значение или нет</returns>
-    public bool IsContain(int value)
+    public bool Contains(int value)
     {
         ListElement? current = head;
-        for (int i = 0; i < size; ++i)
+        for (int i = 0; i < Size; ++i)
         {
-            if (current.value == value)
+            if (current.Value == value)
             {
                 return true;
             }
-            current = current.next;
+            current = current.Next;
         }
         return false;
     }
@@ -136,31 +155,31 @@ public class UList
     /// <exception cref="OutOfListRangeException">Ошибка при неверно заданный позиции</exception>
     public int Remove(int position)
     {
-        if (position < 0 || position >= size)
+        if (position < 0 || position >= Size)
         {
-            throw new OutOfListRangeException();
+            throw new IndexOutOfRangeException();
         }
         ListElement? previous = null;
         ListElement? current = head;
         for (int i = 0; i < position; i++)
         {
             previous = current;
-            current = current.next;
+            current = current.Next;
         }
-        int removedValue = current.value;
+        int removedValue = current.Value;
         if (current == head)
         {
-            head = current.next;
+            head = current.Next;
         }
         else if (current == tail)
         {
-            previous.next = null;
+            previous.Next = null;
         }
         else
         {
-            previous.next = current.next;
+            previous.Next = current.Next;
         }
-        size--;
+        Size--;
         return removedValue;
     }
 }

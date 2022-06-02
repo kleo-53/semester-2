@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace UniqueList;
 
-namespace UniqueList;
-
-public class UUniqueList : UList
+/// <summary>
+/// Unique list
+/// </summary>
+public class UniqueList : List
 {
     /// <summary>
     /// Добавляет элемент в конец списка
     /// </summary>
     /// <param name="value">Добавляемый элемент</param>
     /// <exception cref="AddRepeatedElementException">Ошибка при добавлении повторяющегося элемента</exception>
-    public new void Add(int value)
+    public override void Add(int value)
     {
-        if (base.IsContain(value))
+        if (base.Contains(value))
         {
             throw new AddRepeatedElementException();
         }
@@ -28,12 +25,26 @@ public class UUniqueList : UList
     /// <param name="value">Добавляемый элемент</param>
     /// <param name="position">Позиция, в которую нужно добавить элемент</param>
     /// <exception cref="AddRepeatedElementException">Ошибка при добавлении повторяющегося элемента</exception>
-    public new void Add(int value, int position)
+    public override void Add(int value, int position)
     {
-        if (base.IsContain(value))
+        if (base.Contains(value))
         {
             throw new AddRepeatedElementException();
         }
         base.Add(value, position);
+    }
+
+    /// <summary>
+    /// Изменение значения по позиции
+    /// </summary>
+    /// <param name="value">Данное значение</param>
+    /// <param name="position">Позиция</param>
+    public override void Change(int value, int position)
+    {
+        if (base.Contains(value))
+        {
+            throw new AddRepeatedElementException();
+        }
+        base.Change(value, position);
     }
 }
