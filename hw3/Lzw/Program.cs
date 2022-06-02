@@ -1,64 +1,73 @@
-﻿using System.IO;
+﻿namespace Lzw;
 
-namespace Lzw;
+using System.IO;
 
-public class Lzw
+/// <summary>
+/// Класс сжатия и распаковки файла алгоритмом LZW
+/// </summary>
+public static class Lzw
 {
+    /// <summary>
+    /// Прямое преобразование Lzw
+    /// </summary>
+    /// <param name="givenName">Происходит сжатие файла по данному пути</param>
+    /// <returns>Коэффициент сжатия</returns>
     public static double StraightLzw(string givenName)
     {
-        string zipName = givenName.Substring(0, givenName.LastIndexOf('.')) + ".zipped";
-        FileStream fileStream = new FileStream(zipName, FileMode.Create, FileAccess.Write);
-        StreamWriter printer = new StreamWriter(fileStream);
-
-        string extension = givenName.Substring(givenName.LastIndexOf('.'));
-        printer.WriteLine(extension);
-
-        var codeTable = new Dictionary<string, char>();
-        for (int i = 0; i < 256; i++)
+        var zipName = givenName.Substring(0, givenName.LastIndexOf('.')) + ".zipped";
+        using (var fileStream = new FileStream(zipName, FileMode.Create, FileAccess.Write))
         {
-            codeTable[((char)i).ToString()] = (char)i;
-        }
-        string line = "";
-        byte[] inputData = File.ReadAllBytes(givenName);
-        int addedKeys = 0;
-        var writtenSymbols = 0;
-        for (int i = 0; i < inputData.Length; i++)
-        {
-            var currentSymbol = (char)inputData[i];
-            if (codeTable.ContainsKey(line + currentSymbol))
+            using (var printer = new StreamWriter(fileStream))
             {
-                line += currentSymbol;
-            }
-            else
-            {
+
+
+                var extension = givenName.Substring(givenName.LastIndexOf('.'));
+                printer.WriteLine(extension);
+
+                var codeTable = new Dictionary<string, char>();
+                for (int i = 0; i < 256; i++)
+                {
+                    codeTable[((char)i).ToString()] = (char)i;
+                }
+                var line = "";
+                byte[] inputData = File.ReadAllBytes(givenName);
+                var addedKeys = 0;
+                var writtenSymbols = 0;
+                for (int i = 0; i < inputData.Length; i++)
+                {
+                    var currentSymbol = (char)inputData[i];
+                    if (codeTable.ContainsKey(line + currentSymbol))
+                    {
+                        line += currentSymbol;
+                    }
+                    else
+                    {
+                        writtenSymbols++;
+                        printer.Write(codeTable[line]);
+                        addedKeys++;
+                        codeTable[line + currentSymbol] = (char)(255 + addedKeys);
+                        line = currentSymbol.ToString();
+                    }
+                }
                 writtenSymbols++;
                 printer.Write(codeTable[line]);
-                addedKeys++;
-                codeTable[line + currentSymbol] = (char)(255 + addedKeys);
-                line = currentSymbol.ToString();
+                return writtenSymbols != 0 ? (double)inputData.Length / writtenSymbols : 0;
             }
-        }
-        writtenSymbols++;
-        printer.Write(codeTable[line]);
-        printer.Close();
-        fileStream.Close();
-        try
-        {
-            return (double)inputData.Length / writtenSymbols;
-        }
-        catch (ArgumentNullException)
-        {
-            return 1;
         }
     }
 
+    /// <summary>
+    /// Распаковка файла алгоритмом Lzw
+    /// </summary>
+    /// <param name="fileName">Путь к файлу</param>
+    /// <returns>Коэффициент расжатия</returns>
     public static double ReverseLzw(string fileName)
     {
-        string[] data = File.ReadAllLines(fileName);
-        string extension = data[0];
-        string unzipName = fileName.Substring(0, fileName.LastIndexOf(".")) + extension;
+        var data = File.ReadAllLines(fileName);
+        var extension = data[0];
+        var unzipName = fileName.Substring(0, fileName.LastIndexOf(".")) + extension;
 
-        string linesToLzw = "";
+        var linesToLzw = "";
         for (int i = 1; i < data.Length; i++)
         {
             linesToLzw += data[i];
@@ -72,57 +81,48 @@ public class Lzw
         {
             codeTable[((char)i)] = ((char)i).ToString();
         }
-        FileStream fileStream = new FileStream(unzipName, FileMode.Create, FileAccess.Write);
-        StreamWriter printer = new StreamWriter(fileStream);
-        string previousValue = "";
-        int addedKeys = 0;
         var writtenSymbols = 0;
-        for (int i = 0; i < linesToLzw.Length; i++)
+        using (var fileStream = new FileStream(unzipName, FileMode.Create, FileAccess.Write))
         {
-            if (codeTable.ContainsKey(linesToLzw[i]))
+            using (var printer = new StreamWriter(fileStream))
             {
-                var line = codeTable[linesToLzw[i]];
-                writtenSymbols += line.Length;
-                printer.Write(line);
-                if (previousValue != "")
+                string previousValue = "";
+                var addedKeys = 0;
+                for (int i = 0; i < linesToLzw.Length; i++)
                 {
-                    addedKeys++;
-                    codeTable[(char)(255 + addedKeys)] = previousValue + line.Substring(0, 1);
+                    if (codeTable.ContainsKey(linesToLzw[i]))
+                    {
+                        var line = codeTable[linesToLzw[i]];
+                        writtenSymbols += line.Length;
+                        printer.Write(line);
+                        if (previousValue != "")
+                        {
+                            addedKeys++;
+                            codeTable[(char)(255 + addedKeys)] = previousValue + line.Substring(0, 1);
+                        }
+                        previousValue = line;
+                    }
+                    else
+                    {
+                        var createdValue = previousValue + previousValue.Substring(0, 1);
+                        printer.Write(createdValue);
+                        writtenSymbols += createdValue.Length;
+                        addedKeys++;
+                        codeTable[(char)(255 + addedKeys)] = createdValue;
+                        previousValue = codeTable[linesToLzw[i]];
+                    }
                 }
-                previousValue = line;
+                return linesToLzw.Length != 0 ? (double)writtenSymbols / linesToLzw.Length : 0;
             }
-            else
-            {
-                var createdValue = previousValue + previousValue.Substring(0, 1);
-                printer.Write(createdValue);
-                writtenSymbols += createdValue.Length;
-                addedKeys++;
-                codeTable[(char)(255 + addedKeys)] = createdValue;
-                previousValue = codeTable[linesToLzw[i]];
-            }
-        }
-        printer.Close();
-        fileStream.Close();
-        try
-        {
-            return (double)writtenSymbols / linesToLzw.Length;
-        }
-        catch (ArgumentNullException)
-        {
-            return 1;
         }
     }
 
     public static void Main(string[] args)
     {
-        var inputLine = "";
-        Console.WriteLine("Введите путь к файлу и то, что с ним нужно сделать:\n");
-        inputLine = Console.ReadLine();
         try
         {
-            var inputs = inputLine.Split(" ");
-            var filePath = inputs[0];
-            var fileAction = inputs[1];
+            var filePath = args[1];
+            var fileAction = args[0];
             var coefficient = 1.0;
             if (fileAction == "-c")
             {
@@ -142,8 +142,5 @@ public class Lzw
         {
             throw new IndexOutOfRangeException("Введена пустая строка!"); 
         }
-        //StraightLzw("C:/Users/Star/source/repos/semester-2/hw3/Lzw/TestText.txt");
-        //ReverseLzw("C:/Users/Star/source/repos/semester-2/hw3/Lzw/TestText.zipped");
-        //save, empty str, no exist file,
     }
 }
