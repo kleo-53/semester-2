@@ -1,9 +1,8 @@
-п»їusing NUnit.Framework;
+namespace stack.Tests;
+
+using NUnit.Framework;
 using StackCalculator;
 using System.Collections.Generic;
-using System;
-
-namespace stack.Tests;
 
 public class Tests
 {
@@ -17,9 +16,9 @@ public class Tests
     }
 
     /// <summary>
-    /// РџСЂРѕРІРµСЂРєР° С„СѓРЅРєС†РёРё РґРѕР±Р°РІР»РµРЅРёСЏ СЌР»РµРјРµРЅС‚Р° РІ СЃС‚РµРє Рё РєРѕСЂСЂРµРєС‚РЅРѕР№ СЂР°Р±РѕС‚С‹ С„СѓРЅРєС†РёРё IsEmpty
+    /// Проверка функции добавления элемента в стек и корректной работы функции IsEmpty
     /// </summary>
-    [TestCaseSource(nameof(StackToTest))]
+    [Test, TestCaseSource(nameof(StackToTest))]
     public void PushToStackWorksCorrectlyTest(IStack stack)
     {
         Assert.IsTrue(stack.IsEmpty);
@@ -28,7 +27,7 @@ public class Tests
     }
 
     /// <summary>
-    /// РџСЂРѕРІРµСЂРєР° С„СѓРЅРєС†РёРё IsEmpty РїРѕСЃР»Рµ РґРѕР±Р°РІР»РµРЅРёСЏ Рё СѓРґР°Р»РµРЅРёСЏ СЌР»РµРјРµРЅС‚Р° РёР· СЃС‚РµРєР°
+    /// Проверка функции IsEmpty после добавления и удаления элемента из стека
     /// </summary>
     [Test, TestCaseSource(nameof(StackToTest))]
     public void StackIsEmptyAfterPushAndPopTest(IStack stack)
@@ -40,7 +39,7 @@ public class Tests
     }
 
     /// <summary>
-    /// РџСЂРѕРІРµСЂРєР° СЂР°Р±РѕС‚С‹ РїСЂРёРЅС†РёРїР° First-In-Last-Out РґР»СЏ С‚СЂРµС… СЌР»РµРјРµРЅС‚РѕРІ
+    /// Проверка работы принципа First-In-Last-Out для трех элементов
     /// </summary>
     [Test, TestCaseSource(nameof(StackToTest))]
     public void PopWithThreeElementsFromStackWorksCorrectlyTest(IStack stack)
@@ -54,7 +53,7 @@ public class Tests
     }
 
     /// <summary>
-    /// РџСЂРѕРІРµСЂРєР° РїРѕСЏРІР»РµРЅРёСЏ РѕС€РёР±РєРё РїСЂРё РїРѕРїС‹С‚РєРµ СѓРґР°Р»РёС‚СЊ СЌР»РµРјРµРЅС‚ РёР· РїСѓСЃС‚РѕРіРѕ СЃС‚РµРєР°
+    /// Проверка появления ошибки при попытке удалить элемент из пустого стека
     /// </summary>
     [Test, TestCaseSource(nameof(StackToTest))]
     public void PopWithNoPushThrowsExceptionTest(IStack stack)
