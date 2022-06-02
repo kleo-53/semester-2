@@ -1,17 +1,11 @@
+namespace stack.Tests;
+
 using NUnit.Framework;
 using StackCalculator;
 using System.Collections.Generic;
-using System;
-
-namespace stack.Tests;
 
 public class Tests
 {
-    [SetUp]
-    public void Setup()
-    {
-    }
-
     private static IEnumerable<IStack> StackToTest
     {
         get

@@ -2,6 +2,8 @@
 
 using System;
 
+namespace StackCalculator;
+
 /// <summary>
 /// Реализация стека на списке
 /// </summary>
@@ -9,6 +11,9 @@ public class StackOnList : IStack
 {
     private List<double> stack;
 
+    private List<double> stack;
+    private const int stackSize = 10;
+    private int count;
     /// <summary>
     /// Пустой конструктор
     /// </summary>
@@ -16,6 +21,7 @@ public class StackOnList : IStack
     {
         stack = new List<double>();
     }
+    // Добавляет элемент
 
     /// <summary>
     /// Добавляет элемент в стек
@@ -24,7 +30,14 @@ public class StackOnList : IStack
     public void Push(double element)
     {
         stack.Insert(0, element);
+        ++count;
     }
+    // Возвращает, пустой ли стек
+    public bool IsEmpty
+    {
+        get { return count == 0; }
+    }
+    // Возвращает размер стека
 
     /// <summary>
     /// Возвращает, пустой ли стек
@@ -44,12 +57,20 @@ public class StackOnList : IStack
     /// <returns>Удаленный элемент и true, либо false в случае пустого стека</returns>
     public (double, bool) Pop()
     {
+        return count;
+    }
+    // Удаляет и возвращает первый элемент стека
+    public double Pop()
+    {
         if (IsEmpty)
         {
+            throw new InvalidOperationException("Стек пуст");
             return (0, false);
         }
         double element = stack.First();
         stack.RemoveAt(0);
+        --count;
+        return element;
         return (element, true);
     }
 }

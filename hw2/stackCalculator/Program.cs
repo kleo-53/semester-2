@@ -1,6 +1,8 @@
 ﻿namespace StackCalculator;
 
 using System;
+using StackCalculator.Tests;
+using StackCalculator;
 
 class Program
 {
@@ -10,6 +12,7 @@ class Program
         var stackType = Console.ReadLine();
         if (stackType == null)
         {
+            Console.WriteLine("Введен пустой массив!");
             Console.WriteLine("Введена пустая строка!");
             return;
         }
@@ -17,10 +20,22 @@ class Program
         var inputString = Console.ReadLine();
         if (inputString == null)
         {
+            Console.WriteLine("Введен пустой массив!");
             Console.WriteLine("Введена пустая строка!");
             return;
         }
+        try
+        {
+            var result = Calculator.Calculation(inputString, stackType);
+            Console.WriteLine("Результат вычисления выражения: {0}", result);
+        }
+        catch (Exception ex)
+        { 
+            Console.WriteLine(ex.ToString()); 
+            return; 
+        }
+        return;
         var result = Calculator.Calculation(inputString, stackType == "0" ? new StackOnArray() : new StackOnList());
-        Console.WriteLine(result.Item2 == true ? $"Результат вычисления выражения: {result.Item1}" : "Что-то пошло не так:(");
+        Console.WriteLine(result.Item2 ? $"Результат вычисления выражения: {result.Item1}" : "Что-то пошло не так:(");
     }
 }
