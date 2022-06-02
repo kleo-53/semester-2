@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SparseVector", "SparseVector.csproj", "{E541076E-6BED-4A70-887D-F47C0CC44364}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySparseVector.Tests", "..\MySparseVector.Tests\MySparseVector.Tests.csproj", "{988BD474-C14F-4C08-941A-8C3F1BF07C68}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E541076E-6BED-4A70-887D-F47C0CC44364}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E541076E-6BED-4A70-887D-F47C0CC44364}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E541076E-6BED-4A70-887D-F47C0CC44364}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E541076E-6BED-4A70-887D-F47C0CC44364}.Release|Any CPU.Build.0 = Release|Any CPU
+		{988BD474-C14F-4C08-941A-8C3F1BF07C68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{988BD474-C14F-4C08-941A-8C3F1BF07C68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{988BD474-C14F-4C08-941A-8C3F1BF07C68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{988BD474-C14F-4C08-941A-8C3F1BF07C68}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F9731FD4-F037-4352-B0EE-DE1297211ABC}
+	EndGlobalSection
+EndGlobal
