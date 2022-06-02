@@ -7,6 +7,14 @@ using System;
 /// </summary>
 public static class Calculator
 {
+    /// <summary>
+    /// Функция выполняет вычисление
+    /// </summary>
+    /// <param name="inputString">Строка в обратной польской записи</param>
+    /// <param name="stack">Один из возможных стеков, с корорым нужно работать</param>
+    /// <returns>Ответ или наличие ошибки в строке</returns>
+    /// <exception cref="IndexOutOfRangeException">Ошибка в случае пустой строки</exception>
+    /// <exception cref="DivideByZeroException">Ошибка в случае деления на 0</exception>
     public static (double, bool) Calculation(string inputString, IStack stack)
     {
         var arrayElements = inputString.Split(' ');

@@ -9,6 +9,9 @@ public class StackOnList : IStack
 {
     private List<double> stack;
 
+    /// <summary>
+    /// Пустой конструктор
+    /// </summary>
     public StackOnList()
     {
         stack = new List<double>();

@@ -11,11 +11,18 @@ public class StackOnArray : IStack
     private const int stackSize = 10;
     private int count;
 
+    /// <summary>
+    /// Пустой конструктор
+    /// </summary>
     public StackOnArray()
     {
         stack = new double[stackSize];
     }
 
+    /// <summary>
+    /// Конструктор по размеру стека
+    /// </summary>
+    /// <param name="size">Данный размер</param>
     public StackOnArray(int size)
     {
         stack = new double[size];
