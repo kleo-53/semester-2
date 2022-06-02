@@ -1,10 +1,12 @@
-﻿using System;
-using bor;
+﻿namespace bor;
+
+using System;
+
 class Program
 {
     static void Main(string[] args)
     {
-        Tree tree = new Tree();
+        Trie tree = new Trie();
         var continueProgram = true;
         while (continueProgram)
         {
