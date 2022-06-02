@@ -1,27 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Game;
 
-namespace Game;
+using System;
 
+/// <summary>
+/// Весь процесс игры
+/// </summary>
 public class GameProcess
 {
-    public bool[][] Walls { get; set; }
-    public (int, int) Character { get; set; }
-    int wallsSize = 10;
+    /// <summary>
+    /// Игровое поле
+    /// </summary>
+    private bool[][] walls;
 
+    /// <summary>
+    /// Координаты персонажа
+    /// </summary>
+    private (int, int) character;
+    private int wallsSize = 10;
+
+    /// <summary>
+    /// Конструктор игры
+    /// </summary>
     public GameProcess()
     {
-        Walls = new bool[wallsSize][];
-        Character = (-1, -1);
+        walls = new bool[wallsSize][];
+        character = (-1, -1);
         for (int i = 0; i < wallsSize; i++)
         {
-            Walls[i] = new bool[wallsSize];
+            walls[i] = new bool[wallsSize];
         }
     }
 
+    /// <summary>
+    /// Переопределение размеров поля
+    /// </summary>
+    /// <param name="givenSize">Новый размер поля</param>
     public void ResizeMap(int givenSize)
     {
         var newWalls = new bool[givenSize][];
@@ -33,16 +46,22 @@ public class GameProcess
         {
             for (int j = 0; j < wallsSize; ++j)
             {
-                newWalls[i][j] = Walls[i][j];
+                newWalls[i][j] = walls[i][j];
             }
         }
-        Walls = newWalls;
+        walls = newWalls;
         wallsSize = givenSize;
     }
 
+    /// <summary>
+    /// Генерация карты
+    /// </summary>
+    /// <param name="path">Путь к файлу с картой</param>
+    /// <exception cref="ArgumentOutOfRangeException">Ошибка в случае добавления двух персонажей</exception>
+    /// <exception cref="InvalidDataException">Ошибка в случае неизвестных символов</exception>
     public void GenerateMap(string path)
     {
-        using StreamReader map = new StreamReader(path);
+        using var map = new StreamReader(path);
         int linesSize = Console.CursorTop;
         while (true)
         {
@@ -59,12 +78,12 @@ public class GameProcess
 
             for (int j = Console.CursorLeft; j < line.Length; j++)
             {
-                Walls[linesSize][j] = (line[j] == '*');
+                walls[linesSize][j] = (line[j] == '*');
                 if (line[j] == '@')
                 {
-                    if (Character.Item1 == -1 && Character.Item2 == -1)
+                    if (character.Item1 == -1 && character.Item2 == -1)
                     {
-                        Character = (j, linesSize);
+                        character = (j, linesSize);
                     }
                     else
                     {
@@ -80,43 +99,22 @@ public class GameProcess
             Console.WriteLine(line);
         }
         map.Close();
-        Console.SetCursorPosition(Character.Item1, Character.Item2);
+        Console.SetCursorPosition(character.Item1, character.Item2);
     }
 
-    private void SetCharacter(char direction)
+    private void SetCharacter(int directionLR, int directionUD)
     {
         Console.Write(" ");
-        switch (direction)
+        if (!СorrectCoords(character.Item1 + directionLR, character.Item2 + directionUD) ||
+            walls[character.Item2][character.Item1 + 1] || 
+            Math.Abs(directionLR) + Math.Abs(directionUD) == 1)
         {
-            case 'l':
-                {
-                    Character = (Character.Item1 - 1, Character.Item2);
-                    break;
-                }
-            case 'r':
-                {
-                    Character = (Character.Item1 + 1, Character.Item2);
-                    break;
-                }
-            case 'u':
-                {
-                    Character = (Character.Item1, Character.Item2 - 1);
-                    break;
-                }
-            case 'd':
-                {
-                    Character = (Character.Item1, Character.Item2 + 1);
-                    break;
-                }
-            default:
-                {
-                    throw new ArgumentException();
-                }
-
+            return;
         }
-        Console.SetCursorPosition(Character.Item1, Character.Item2);
+        character = (character.Item1 + directionLR, character.Item2 + directionUD);
+        Console.SetCursorPosition(character.Item1, character.Item2);
         Console.Write("@");
-        Console.SetCursorPosition(Character.Item1, Character.Item2);
+        Console.SetCursorPosition(character.Item1, character.Item2);
     }
 
     private bool СorrectCoords(int x, int y)
@@ -124,40 +122,33 @@ public class GameProcess
         return (x >= 0) && (y >= 0) && (x < wallsSize) && (y < wallsSize);
     }
 
+    /// <summary>
+    /// Перестановка персонажа при нажатии на левую стрелку
+    /// </summary>
     public void OnLeft(object? sender, EventArgs args)
-    {
-        if (!СorrectCoords(Character.Item1 - 1, Character.Item2) || Walls[Character.Item2][Character.Item1 - 1])
-        {
-            return;
-        }
-        SetCharacter('l');
-    }
+        => SetCharacter(-1, 0);
 
+    /// <summary>
+    /// Перестановка персонажа при нажатии на правую стрелку
+    /// </summary>
     public void OnRight(object? sender, EventArgs args)
     {
-        if (!СorrectCoords(Character.Item1 + 1, Character.Item2) || Walls[Character.Item2][Character.Item1 + 1])
-        {
-            return;
-        }
-        SetCharacter('r');
+        SetCharacter(1, 0);
     }
 
+    /// <summary>
+    /// Перестановка персонажа при нажатии на верхнюю стрелку
+    /// </summary>
     public void OnUp(object? sender, EventArgs args)
     {
-        if (!СorrectCoords(Character.Item1, Character.Item2 - 1) || Walls[Character.Item2 - 1][Character.Item1])
-        {
-            return;
-        }
-        SetCharacter('u');
+        SetCharacter(0, -1);
     }
 
+    /// <summary>
+    /// Перестановка персонажа при нажатии на нижнюю стрелку
+    /// </summary>
     public void OnDown(object? sender, EventArgs args)
     {
-        if (!СorrectCoords(Character.Item1, Character.Item2 + 1) || Walls[Character.Item2 + 1][Character.Item1])
-        {
-            return;
-        }
-        SetCharacter('d');
+        SetCharacter(0, 1);
     }
-
 }

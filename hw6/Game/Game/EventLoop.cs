@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Game;
 
-namespace Game;
+using System;
 
+/// <summary>
+/// Класс loop
+/// </summary>
 internal class EventLoop
 {
     public event EventHandler<EventArgs> LeftHandler = (sender, args) => { };
@@ -13,6 +12,10 @@ internal class EventLoop
     public event EventHandler<EventArgs> UpHandler = (sender, args) => { };
     public event EventHandler<EventArgs> DownHandler = (sender, args) => { };
 
+    /// <summary>
+    /// Функция, отвечающая за работу функций по нажатиям на кнопки
+    /// </summary>
+    /// <exception cref="ArgumentException"></exception>
     public void Run()
     {
         while (true)
