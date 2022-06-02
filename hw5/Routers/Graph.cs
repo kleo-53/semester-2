@@ -1,24 +1,39 @@
-﻿using System;
+﻿namespace Routers;
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Routers;
-
+/// <summary>
+/// Класс графа, в котором хранятся данные
+/// </summary>
 public class Graph : IGraph
 {
+    /// <summary>
+    /// Количество вершин в графе
+    /// </summary>
     public int NumVertexes { get; set; }
-    public List<Tuple<int, int, int>> VertexList { get; set; }
+
+    /// <summary>
+    /// Список ребер
+    /// </summary>
+    public List<Tuple<int, int, int>> EdgesList { get; set; }
+
+    /// <summary>
+    /// Количество ребер
+    /// </summary>
+    public int EdgesCounter { get; set; }
+
     private int[,] fromTo;
-    public int EdgesCounter {  get; set; }
     private bool[] visited;
     private int fromToSize;
 
+    /// <summary>
+    /// Конструктор графа
+    /// </summary>
+    /// <param name="path">Путь к файлу</param>
     public Graph(string path) 
     {
-        EdgesCounter = 0;
-        VertexList = new List<Tuple<int, int, int>>();
+        EdgesList = new List<Tuple<int, int, int>>();
         fromToSize = 10;
         fromTo = new int[fromToSize, fromToSize];
         Parse(path);
@@ -26,7 +41,7 @@ public class Graph : IGraph
 
     private void Resize()
     {
-        fromToSize += 20;
+        fromToSize *= 2;
         var newFromTo = new int[fromToSize, fromToSize];
         for (int i = 0; i < NumVertexes; ++i)
         {
@@ -37,6 +52,7 @@ public class Graph : IGraph
         }
         fromTo = newFromTo;
     }
+
     private void AddEdge(int from, int to, int weight)
     {
         while (from > fromToSize || to > fromToSize)
@@ -47,9 +63,13 @@ public class Graph : IGraph
         fromTo[to, from] = weight;
         EdgesCounter++;
         var add = new Tuple<int, int, int>(from, to, weight);
-        VertexList.Add(add);
+        EdgesList.Add(add);
     }
 
+    /// <summary>
+    /// Добавление ребра после удаления
+    /// </summary>
+    /// <param name="i">Массив из двух вершин и ребра</param>
     public void AddAgain(Tuple<int, int, int> i)
     {
         fromTo[i.Item1, i.Item2] = i.Item3;
@@ -71,9 +91,9 @@ public class Graph : IGraph
             int startNode = int.Parse(splitLine[0].Split(":")[0]);
             this.NumVertexes = Math.Max(NumVertexes, startNode);
 
-            for (var i = 1; i < splitLine.Length; i+= 2)
+            for (var i = 1; i < splitLine.Length; i += 2)
             {
-                string[] splitSplitLine = splitLine[i+1].Split("(");
+                string[] splitSplitLine = splitLine[i + 1].Split("(");
 
                 int finishNode = int.Parse(splitLine[i]);
                 this.NumVertexes = Math.Max(NumVertexes, finishNode);
@@ -83,9 +103,15 @@ public class Graph : IGraph
         }
     }
 
-    public bool IsConnect(int currentVertex, int neededVertex)
+    /// <summary>
+    /// Проверка на связность двух вершин
+    /// </summary>
+    /// <param name="currentVertex">Первая вершина</param>
+    /// <param name="neededVertex">Та вершина, до которой проверяем связность</param>
+    /// <returns>Связаны или нет</returns>
+    public bool AreConnected(int currentVertex, int neededVertex)
     {
-        visited = new bool[NumVertexes+1];
+        visited = new bool[NumVertexes + 1];
         return DFS(currentVertex, neededVertex, ref visited);
     }
 
@@ -105,6 +131,11 @@ public class Graph : IGraph
         }
         return false;
     }
+
+    /// <summary>
+    /// Удаление ребра
+    /// </summary>
+    /// <param name="i"></param>
     public void DeleteEdge(Tuple<int, int, int> i)
     {
         fromTo[i.Item1, i.Item2] = 0;
@@ -112,6 +143,10 @@ public class Graph : IGraph
         EdgesCounter--;
     }
 
+    /// <summary>
+    /// Даспечатывает раф в файл
+    /// </summary>
+    /// <param name="outPath">Путь к файлу</param>
     public void PrintGraph(string outPath)
     {
         using var outputStream = new StreamWriter(outPath);

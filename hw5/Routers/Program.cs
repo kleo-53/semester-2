@@ -1,10 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Routers;
+﻿using Routers;
 
-string inPath = "C:/Users/Star/source/repos/semester-2/hw5/Routers/input.txt";
-string outPath = "C:/Users/Star/source/repos/semester-2/hw5/Routers/output.txt";
-RoutersUtility.Utility(inPath, outPath);
+if (args.Length < 2)
+{
+    Console.WriteLine("Недостаточное количество аргументов (ведите два пути до файлов)");
+}
+string inPath = args[0];
+string outPath = args[1];
+if (!RoutersUtility.Utility(inPath, outPath))
+{
+    Console.Error.WriteLine("Граф не связный!");
+}

@@ -1,35 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Routers;
 
-namespace Routers;
+using System;
 
-public static class RoutersUtility
+/// <summary>
+/// Утилита
+/// </summary>
+public class RoutersUtility
 {
     private static int CompareEdgesByWeight(Tuple<int, int, int> a, Tuple<int, int, int> b)
-    {
-        return (a.Item3 < b.Item3) ? -1 : 1;
-    }
+        => (a.Item3 < b.Item3) ? -1 : 1;
 
-    public static void Utility(string inPath, string outPath)
+    /// <summary>
+    /// Утилита
+    /// </summary>
+    /// <param name="inPath">Путь к исходному файлу</param>
+    /// <param name="outPath">Путь к выходному файлу</param>
+    /// <returns>Связен граф или не связен</returns>
+    public static bool Utility(string inPath, string outPath)
     {
         IGraph graph = new Graph(inPath);
-        graph.VertexList.Sort(CompareEdgesByWeight);
-        foreach (var i in graph.VertexList)
+        graph.EdgesList.Sort(CompareEdgesByWeight);
+        var resultEdges = 0;
+        var maxEdges = graph.EdgesList.Count;
+        foreach (var i in graph.EdgesList)
         {
             if (graph.EdgesCounter == graph.NumVertexes - 1)
             {
                 break;
             }
             graph.DeleteEdge(i);
-            if (!graph.IsConnect(i.Item1, i.Item2))
+            if (!graph.AreConnected(i.Item1, i.Item2))
             {
                 graph.AddAgain(i);
+                resultEdges++;
             }
         }
-
+        if (resultEdges == maxEdges)
+        {
+            return false;
+        }
         graph.PrintGraph(outPath);
+        return true;
     }
 }
