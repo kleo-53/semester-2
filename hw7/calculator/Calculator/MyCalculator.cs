@@ -1,11 +1,10 @@
 ﻿namespace Calculator;
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
+/// <summary>
+/// Класс калькулятора
+/// </summary>
 internal class MyCalculator
 {
     private double? firstNumber;
@@ -13,6 +12,10 @@ internal class MyCalculator
     private char? operation;
     private const double inaccuracy = 1e-7;
 
+    /// <summary>
+    /// Назначение чисел
+    /// </summary>
+    /// <param name="givenNumber">Данное число</param>
     public void AssignNumber(double givenNumber)
     {
         if (firstNumber == null)
@@ -25,16 +28,26 @@ internal class MyCalculator
         }
     }
     
+    /// <summary>
+    /// Назначение операции
+    /// </summary>
+    /// <param name="givenOperation">Операция</param>
     public void AssignOperation(char givenOperation)
     {
         this.operation = givenOperation;
     }
 
+    /// <summary>
+    /// Выполнение вычисления
+    /// </summary>
+    /// <returns>Получившееся значение</returns>
+    /// <exception cref="DivideByZeroException">При делении на 0</exception>
+    /// <exception cref="MissingArgumentException">Непредвиденная ошибка</exception>
     public double Calculate()
     {
         if (firstNumber == null || secondNumber == null)
         {
-            throw new ArgumentNullException();
+            throw new MissingArgumentException();
         }
         double? result;
         switch (operation)
@@ -72,6 +85,9 @@ internal class MyCalculator
         return (double)result;
     }
 
+    /// <summary>
+    /// Очистка данных
+    /// </summary>
     public void Clear()
     {
         this.firstNumber = null;
